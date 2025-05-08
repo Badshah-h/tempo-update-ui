@@ -51,23 +51,31 @@ const NavItem = ({
       to={href}
       onClick={onClick}
       className={cn(
-        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all",
+        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all relative overflow-hidden group",
         isActive
-          ? "bg-primary text-primary-foreground"
-          : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+          ? "bg-primary/10 text-primary font-medium"
+          : "text-muted-foreground hover:bg-secondary/10 hover:text-foreground"
       )}
     >
-      {icon}
+      <div className={cn(
+        "flex items-center justify-center transition-all",
+        isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+      )}>
+        {icon}
+      </div>
       <span
         className={cn(
-          "transition-opacity",
+          "transition-all duration-200",
           isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100"
         )}
       >
         {label}
       </span>
-      {isActive && isCollapsed && (
-        <span className="absolute right-0 top-1/2 h-8 w-1 -translate-y-1/2 rounded-l-md bg-primary" />
+      {isActive && (
+        <>
+          <span className="absolute left-0 top-0 h-full w-1 bg-primary rounded-r-md" />
+          <span className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary to-secondary rounded-tr-md" style={{ width: isCollapsed ? '100%' : '70%' }} />
+        </>
       )}
     </Link>
   );
@@ -140,16 +148,23 @@ const AdminLayout = () => {
           width: isCollapsed ? 70 : 240,
         }}
         transition={{ duration: 0.2, ease: "easeInOut" }}
+        style={{
+          backgroundImage: `radial-gradient(circle at 25px 25px, rgba(var(--primary), 0.03) 2%, transparent 0%),
+                           radial-gradient(circle at 75px 75px, rgba(var(--primary), 0.03) 2%, transparent 0%)`,
+          backgroundSize: '100px 100px',
+        }}
       >
         <div className="flex h-16 items-center justify-between px-4 py-4">
           <div className="flex items-center gap-2">
-            <MessageSquare className="h-6 w-6 text-primary" />
+            <div className="bg-primary/10 p-2 rounded-md">
+              <MessageSquare className="h-6 w-6 text-primary" />
+            </div>
             {!isCollapsed && (
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-lg font-semibold"
+                className="text-lg font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
               >
                 AI Admin
               </motion.span>
@@ -201,13 +216,14 @@ const AdminLayout = () => {
               variant="ghost"
               size="icon"
               onClick={toggleTheme}
-              className="rounded-full"
+              className="rounded-full hover:bg-primary/5"
             >
               {theme === "light" ? (
-                <Moon className="h-5 w-5" />
+                <Moon className="h-5 w-5 text-primary" />
               ) : (
-                <Sun className="h-5 w-5" />
+                <Sun className="h-5 w-5 text-primary" />
               )}
+              <span className="sr-only">Toggle theme</span>
             </Button>
 
             {!isCollapsed && (
@@ -215,30 +231,39 @@ const AdminLayout = () => {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="flex items-center gap-2 px-2"
+                    className="flex items-center gap-2 px-2 hover:bg-primary/5"
                   >
-                    <Avatar className="h-8 w-8">
+                    <Avatar className="h-8 w-8 border-2 border-primary/20 ring-2 ring-background">
                       <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin" />
-                      <AvatarFallback>AD</AvatarFallback>
+                      <AvatarFallback className="bg-primary/10 text-primary">AD</AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col items-start text-sm">
                       <span className="font-medium">Admin User</span>
+                      <span className="text-xs text-muted-foreground">Administrator</span>
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium">Admin User</p>
+                      <p className="text-xs text-muted-foreground">admin@example.com</p>
+                    </div>
+                  </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <User className="mr-2 h-4 w-4" />
+                  <DropdownMenuItem className="cursor-pointer hover:bg-primary/5 focus:bg-primary/5">
+                    <User className="mr-2 h-4 w-4 text-primary" />
                     Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Settings className="mr-2 h-4 w-4" />
+                  <DropdownMenuItem className="cursor-pointer hover:bg-primary/5 focus:bg-primary/5">
+                    <Settings className="mr-2 h-4 w-4 text-primary" />
                     Settings
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate("/")}>
+                  <DropdownMenuItem
+                    onClick={() => navigate("/")}
+                    className="cursor-pointer text-destructive hover:bg-destructive/5 focus:bg-destructive/5"
+                  >
                     <LogOut className="mr-2 h-4 w-4" />
                     Log out
                   </DropdownMenuItem>
@@ -257,7 +282,7 @@ const AdminLayout = () => {
         )}
       >
         {/* Top navbar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-6">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-6">
           <Button
             variant="ghost"
             size="icon"
@@ -270,7 +295,7 @@ const AdminLayout = () => {
             <Button
               variant="outline"
               size="sm"
-              className="hidden md:flex gap-2"
+              className="hidden md:flex gap-2 border-primary/20 text-primary hover:bg-primary/5 hover:text-primary"
               onClick={() => navigate("/")}
             >
               <MessageSquare className="h-4 w-4" />
@@ -279,26 +304,34 @@ const AdminLayout = () => {
             {isCollapsed && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <Avatar className="h-8 w-8">
+                  <Button variant="ghost" size="icon" className="hover:bg-primary/5">
+                    <Avatar className="h-8 w-8 border-2 border-primary/20 ring-2 ring-background">
                       <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin" />
-                      <AvatarFallback>AD</AvatarFallback>
+                      <AvatarFallback className="bg-primary/10 text-primary">AD</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium">Admin User</p>
+                      <p className="text-xs text-muted-foreground">admin@example.com</p>
+                    </div>
+                  </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <User className="mr-2 h-4 w-4" />
+                  <DropdownMenuItem className="cursor-pointer hover:bg-primary/5 focus:bg-primary/5">
+                    <User className="mr-2 h-4 w-4 text-primary" />
                     Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Settings className="mr-2 h-4 w-4" />
+                  <DropdownMenuItem className="cursor-pointer hover:bg-primary/5 focus:bg-primary/5">
+                    <Settings className="mr-2 h-4 w-4 text-primary" />
                     Settings
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate("/")}>
+                  <DropdownMenuItem
+                    onClick={() => navigate("/")}
+                    className="cursor-pointer text-destructive hover:bg-destructive/5 focus:bg-destructive/5"
+                  >
                     <LogOut className="mr-2 h-4 w-4" />
                     Log out
                   </DropdownMenuItem>
@@ -309,7 +342,14 @@ const AdminLayout = () => {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-auto">
+        <main
+          className="flex-1 overflow-auto w-full"
+          style={{
+            backgroundImage: `radial-gradient(circle at 100px 100px, rgba(var(--primary), 0.01) 2%, transparent 0%),
+                             radial-gradient(circle at 200px 200px, rgba(var(--secondary), 0.01) 2%, transparent 0%)`,
+            backgroundSize: '300px 300px',
+          }}
+        >
           <Outlet />
         </main>
       </div>

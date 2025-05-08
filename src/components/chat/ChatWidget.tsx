@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Minimize2, Maximize2, Send } from "lucide-react";
+import { MessageCircle, X, Minimize2, Maximize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
+import { useChat } from "@/hooks";
+import { ChatWidgetConfig } from "@/types/chat";
+import { defaultWidgetConfig } from "@/mock/chat/config";
 
-interface ChatWidgetProps {
-  title?: string;
-  subtitle?: string;
-  primaryColor?: string;
-  secondaryColor?: string;
-  position?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
-  initiallyOpen?: boolean;
-  avatarUrl?: string;
-  welcomeMessage?: string;
+interface ChatWidgetProps extends Partial<ChatWidgetConfig> {
+  conversationId?: string;
   onSendMessage?: (message: string) => void;
   onClose?: () => void;
   onMinimize?: () => void;
@@ -22,14 +18,15 @@ interface ChatWidgetProps {
 }
 
 const ChatWidget = ({
-  title = "AI Assistant",
-  subtitle = "Ask me anything!",
-  primaryColor = "#4f46e5",
-  secondaryColor = "#f3f4f6",
-  position = "bottom-right",
-  initiallyOpen = false,
-  avatarUrl = "https://api.dicebear.com/7.x/avataaars/svg?seed=assistant",
-  welcomeMessage = "Hello! How can I help you today?",
+  title = defaultWidgetConfig.title,
+  subtitle = defaultWidgetConfig.subtitle,
+  primaryColor = defaultWidgetConfig.primaryColor,
+  secondaryColor = defaultWidgetConfig.secondaryColor,
+  position = defaultWidgetConfig.position,
+  initiallyOpen = defaultWidgetConfig.initiallyOpen,
+  avatarUrl = defaultWidgetConfig.avatarUrl,
+  welcomeMessage = defaultWidgetConfig.welcomeMessage,
+  conversationId,
   onSendMessage,
   onClose,
   onMinimize,
@@ -37,15 +34,17 @@ const ChatWidget = ({
 }: ChatWidgetProps) => {
   const [isOpen, setIsOpen] = useState(initiallyOpen);
   const [isMaximized, setIsMaximized] = useState(false);
-  const [messages, setMessages] = useState<
-    Array<{
-      id: string;
-      content: string;
-      sender: "user" | "ai";
-      timestamp: Date;
-    }>
-  >([]);
-  const [isLoading, setIsLoading] = useState(false);
+  
+  // Use the chat hook to manage messages and sending
+  const { messages, isLoading, sendMessage } = useChat({
+    conversationId,
+    initialMessages: isOpen ? [{
+      id: "welcome",
+      content: welcomeMessage,
+      sender: "ai",
+      timestamp: new Date(),
+    }] : [],
+  });
 
   // Position classes based on the position prop
   const positionClasses = {
@@ -54,20 +53,6 @@ const ChatWidget = ({
     "top-right": "top-4 right-4",
     "top-left": "top-4 left-4",
   };
-
-  useEffect(() => {
-    // Add welcome message when widget first opens
-    if (isOpen && messages.length === 0) {
-      setMessages([
-        {
-          id: "welcome",
-          content: welcomeMessage,
-          sender: "ai",
-          timestamp: new Date(),
-        },
-      ]);
-    }
-  }, [isOpen, welcomeMessage, messages.length]);
 
   const handleToggleWidget = () => {
     setIsOpen(!isOpen);
@@ -90,35 +75,14 @@ const ChatWidget = ({
     onClose?.();
   };
 
-  const handleSendMessage = (message: string) => {
+  const handleSendMessage = async (message: string) => {
     if (!message.trim()) return;
-
-    // Add user message
-    const userMessage = {
-      id: `user-${Date.now()}`,
-      content: message,
-      sender: "user" as const,
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setIsLoading(true);
 
     // Call the onSendMessage prop if provided
     onSendMessage?.(message);
-
-    // Simulate AI response after a delay
-    setTimeout(() => {
-      const aiResponse = {
-        id: `ai-${Date.now()}`,
-        content: `I received your message: "${message}". This is a placeholder response. In a real implementation, this would be replaced with an actual AI response from the backend.`,
-        sender: "ai" as const,
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, aiResponse]);
-      setIsLoading(false);
-    }, 1500);
+    
+    // Use the sendMessage function from the hook
+    await sendMessage(message);
   };
 
   return (
@@ -196,7 +160,6 @@ const ChatWidget = ({
                 <MessageList
                   messages={messages}
                   isLoading={isLoading}
-                  aiAvatar={avatarUrl}
                 />
               </div>
 
@@ -205,7 +168,7 @@ const ChatWidget = ({
                 <MessageInput
                   onSendMessage={handleSendMessage}
                   isLoading={isLoading}
-                  primaryColor={primaryColor}
+                  suggestedQuestions={defaultWidgetConfig.suggestedQuestions}
                 />
               </div>
             </Card>
