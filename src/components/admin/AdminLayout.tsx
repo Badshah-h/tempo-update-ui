@@ -102,38 +102,55 @@ const AdminLayout = () => {
     document.documentElement.classList.toggle("dark");
   };
 
+  const { canView } = usePermissions();
+
   const navItems = [
     {
       icon: <LayoutDashboard className="h-5 w-5" />,
       label: "Dashboard",
       href: "/admin",
+      resource: "dashboard",
     },
     {
       icon: <MessageSquare className="h-5 w-5" />,
       label: "Widget Config",
       href: "/admin/widget",
+      resource: "widget",
     },
     {
       icon: <Code className="h-5 w-5" />,
       label: "AI Models",
       href: "/admin/models",
+      resource: "models",
     },
     {
       icon: <FileText className="h-5 w-5" />,
       label: "Prompt Templates",
       href: "/admin/prompts",
+      resource: "prompts",
     },
     {
       icon: <BarChart3 className="h-5 w-5" />,
       label: "Analytics",
       href: "/admin/analytics",
+      resource: "analytics",
+    },
+    {
+      icon: <User className="h-5 w-5" />,
+      label: "Users",
+      href: "/admin/users",
+      resource: "users",
     },
     {
       icon: <Settings className="h-5 w-5" />,
       label: "Settings",
       href: "/admin/settings",
+      resource: "settings",
     },
   ];
+
+  // Filter nav items based on user permissions
+  const filteredNavItems = navItems.filter((item) => canView(item.resource));
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -206,7 +223,7 @@ const AdminLayout = () => {
 
         <div className="flex-1 overflow-auto py-2 px-3">
           <nav className="grid gap-1">
-            {navItems.map((item, index) => (
+            {filteredNavItems.map((item, index) => (
               <NavItem
                 key={index}
                 icon={item.icon}

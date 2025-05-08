@@ -1,12 +1,9 @@
-import Dashboard from "@/components/admin/Dashboard";
-import AdminLayout from "@/components/admin/AdminLayout";
+import UserManagement from "@/components/admin/UserManagement";
 
-export default function AdminDashboardStoryboard() {
+export default function UserManagementStoryboard() {
   return (
-    <div className="bg-background min-h-screen">
-      <AdminLayout>
-        <Dashboard />
-      </AdminLayout>
+    <div className="bg-background min-h-screen p-6">
+      <UserManagement />
     </div>
   );
 }
