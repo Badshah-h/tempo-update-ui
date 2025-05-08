@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Code, MessageSquare, Settings, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -14,6 +15,12 @@ import ChatWidget from "./chat/ChatWidget";
 import EmbedCodeGenerator from "./EmbedCodeGenerator";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const goToAdminDashboard = () => {
+    navigate('/admin');
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -52,16 +59,17 @@ const Home = () => {
             <Button
               variant="outline"
               className="gap-2 border-primary/20 text-foreground hover:bg-primary/5 hover:border-primary/30 transition-colors duration-300 shadow-sm"
+              onClick={goToAdminDashboard}
             >
               <Settings className="h-4 w-4" />
               Admin Panel
             </Button>
           </nav>
           <Button
-            className="md:hidden"
             variant="outline"
             size="icon"
             className="border-primary/20 text-foreground hover:bg-primary/5 hover:border-primary/30 transition-colors duration-300 shadow-sm"
+            onClick={goToAdminDashboard}
           >
             <Settings className="h-4 w-4" />
           </Button>
@@ -145,24 +153,36 @@ const Home = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <Card
-              key={index}
-              className="bg-card border border-border/60 hover:border-primary/20 transition-colors duration-300 shadow-soft hover:shadow-medium group overflow-hidden"
-            >
-              <CardHeader>
-                <div className="p-2.5 w-fit rounded-md bg-primary/10 border border-primary/5 shadow-sm group-hover:scale-110 group-hover:bg-primary/15 transition-all duration-300">
-                  {feature.icon}
-                </div>
-                <CardTitle className="mt-4 group-hover:text-primary transition-colors duration-300">
-                  {feature.title}
-                </CardTitle>
-                <CardDescription className="group-hover:text-muted-foreground/90 transition-colors duration-300">
-                  {feature.description}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
+          {features.map((feature, index) => {
+            const CardComponent = feature.link ?
+              (props: React.ComponentProps<typeof Card>) => (
+                <Card
+                  {...props}
+                  onClick={() => navigate(feature.link!)}
+                  className={`${props.className} cursor-pointer`}
+                />
+              ) :
+              Card;
+
+            return (
+              <CardComponent
+                key={index}
+                className="bg-card border border-border/60 hover:border-primary/20 transition-colors duration-300 shadow-soft hover:shadow-medium group overflow-hidden"
+              >
+                <CardHeader>
+                  <div className="p-2.5 w-fit rounded-md bg-primary/10 border border-primary/5 shadow-sm group-hover:scale-110 group-hover:bg-primary/15 transition-all duration-300">
+                    {feature.icon}
+                  </div>
+                  <CardTitle className="mt-4 group-hover:text-primary transition-colors duration-300">
+                    {feature.title}
+                  </CardTitle>
+                  <CardDescription className="group-hover:text-muted-foreground/90 transition-colors duration-300">
+                    {feature.description}
+                  </CardDescription>
+                </CardHeader>
+              </CardComponent>
+            );
+          })}
         </div>
       </section>
 
@@ -319,7 +339,15 @@ const Home = () => {
   );
 };
 
-const features = [
+// Define the Feature interface
+interface Feature {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  link?: string;
+}
+
+const features: Feature[] = [
   {
     icon: <MessageSquare className="h-5 w-5 text-primary" />,
     title: "Context-Aware AI",
@@ -349,6 +377,7 @@ const features = [
     title: "Advanced Admin Panel",
     description:
       "Manage your chat system with our comprehensive admin panel. Configure AI models, prompts, and more.",
+    link: "/admin",
   },
   {
     icon: <MessageSquare className="h-5 w-5 text-primary" />,

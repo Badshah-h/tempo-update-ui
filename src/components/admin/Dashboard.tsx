@@ -89,7 +89,7 @@ const Dashboard = () => {
       action: "updated",
       target: "widget configuration",
       time: "5 minutes ago",
-      status: "success",
+      status: "success" as const,
     },
     {
       id: "act-2",
@@ -101,7 +101,7 @@ const Dashboard = () => {
       action: "added",
       target: "new prompt template",
       time: "2 hours ago",
-      status: "info",
+      status: "info" as const,
     },
     {
       id: "act-3",
@@ -113,7 +113,7 @@ const Dashboard = () => {
       action: "reported",
       target: "an issue with AI responses",
       time: "1 day ago",
-      status: "warning",
+      status: "warning" as const,
     },
   ];
 
@@ -317,13 +317,12 @@ const Dashboard = () => {
                 className="flex items-start gap-3 p-2 rounded-md hover:bg-muted/50 transition-colors border-b last:border-0 pb-3 last:pb-0"
               >
                 <AlertCircle
-                  className={`h-5 w-5 mt-0.5 ${
-                    item.status === "unresolved"
-                      ? "text-rose-500"
-                      : item.status === "investigating"
-                        ? "text-amber-500"
-                        : "text-emerald-500"
-                  }`}
+                  className={`h-5 w-5 mt-0.5 ${item.status === "unresolved"
+                    ? "text-rose-500"
+                    : item.status === "investigating"
+                      ? "text-amber-500"
+                      : "text-emerald-500"
+                    }`}
                 />
                 <div>
                   <div className="font-medium">{item.query}</div>
@@ -367,9 +366,6 @@ const Dashboard = () => {
             <PanelRight className="h-4 w-4" />
             Custom View
           </Button>
-        </div>
-
-        <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="sm"
@@ -653,7 +649,7 @@ const Dashboard = () => {
                     <CardDescription>Latest updates and issues</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <ActivityFeed activities={recentActivities} title="" />
+                    <ActivityFeed activities={recentActivities} title="Recent Activity" />
                   </CardContent>
                 </Card>
               </TabsContent>
