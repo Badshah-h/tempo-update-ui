@@ -6,83 +6,116 @@
   :root {
     /* Professional color palette - Light mode */
     --background: 0 0% 100%;
-    --foreground: 0 0% 9%;
+    /* #FFFFFF */
+    --foreground: 222 85% 5%;
+    /* #020817 */
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
+    /* #FFFFFF */
+    --card-foreground: 222 85% 5%;
+    /* #020817 */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
+    /* #FFFFFF */
+    --popover-foreground: 222 85% 5%;
+    /* #020817 */
 
-    /* Indigo */
-    --primary: 238 100% 59%;
+    /* Gold/Amber */
+    --primary: 38 64% 51%;
+    /* #D39931 */
     --primary-foreground: 0 0% 100%;
+    /* #FFFFFF */
 
-    /* Teal */
-    --secondary: 173 80% 40%;
+    /* Dark Blue */
+    --secondary: 222 85% 5%;
+    /* #020817 */
     --secondary-foreground: 0 0% 100%;
+    /* #FFFFFF */
 
-    --muted: 210 20% 98%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 220 33% 97%;
+    /* #F6F7FA */
+    --muted-foreground: 222 30% 40%;
+    /* Muted dark blue */
 
-    /* Amber */
-    --accent: 38 92% 50%;
-    --accent-foreground: 0 0% 9%;
+    /* Gold/Amber (same as primary) */
+    --accent: 38 64% 51%;
+    /* #D39931 */
+    --accent-foreground: 222 85% 5%;
+    /* #020817 */
 
     /* Red */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
+    /* #FFFFFF */
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 238 100% 59%;
+    --border: 220 33% 97%;
+    /* #F6F7FA */
+    --input: 220 33% 97%;
+    /* #F6F7FA */
+    --ring: 38 64% 51%;
+    /* #D39931 */
 
     --radius: 0.5rem;
 
     /* Success, info, warning colors */
     --success: 160 84% 39%;
     --info: 217 91% 60%;
-    --warning: 38 92% 50%;
+    --warning: 38 64% 51%;
+    /* #D39931 */
   }
 
   .dark {
     /* Professional color palette - Dark mode */
-    --background: 0 0% 7%;
-    --foreground: 0 0% 98%;
+    --background: 222 85% 5%;
+    /* #020817 */
+    --foreground: 0 0% 100%;
+    /* #FFFFFF */
 
-    --card: 0 0% 9%;
-    --card-foreground: 0 0% 98%;
+    --card: 222 85% 8%;
+    /* Slightly lighter dark blue */
+    --card-foreground: 0 0% 100%;
+    /* #FFFFFF */
 
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 222 85% 8%;
+    /* Slightly lighter dark blue */
+    --popover-foreground: 0 0% 100%;
+    /* #FFFFFF */
 
-    /* Indigo - lighter in dark mode */
-    --primary: 238 100% 69%;
-    --primary-foreground: 0 0% 9%;
+    /* Gold/Amber - lighter in dark mode */
+    --primary: 38 70% 55%;
+    /* Lighter gold */
+    --primary-foreground: 222 85% 5%;
+    /* #020817 */
 
-    /* Teal - lighter in dark mode */
-    --secondary: 173 80% 45%;
-    --secondary-foreground: 0 0% 9%;
+    /* Dark Blue - lighter in dark mode */
+    --secondary: 222 85% 20%;
+    /* Lighter dark blue */
+    --secondary-foreground: 0 0% 100%;
+    /* #FFFFFF */
 
-    --muted: 217 33% 18%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 222 30% 15%;
+    --muted-foreground: 220 20% 80%;
 
-    /* Amber - lighter in dark mode */
-    --accent: 38 92% 55%;
-    --accent-foreground: 0 0% 9%;
+    /* Gold/Amber - lighter in dark mode */
+    --accent: 38 70% 55%;
+    /* Lighter gold */
+    --accent-foreground: 222 85% 5%;
+    /* #020817 */
 
     /* Red - adjusted for dark mode */
     --destructive: 0 84% 50%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 238 100% 69%;
+    --border: 222 30% 15%;
+    --input: 222 30% 15%;
+    --ring: 38 70% 55%;
+    /* Lighter gold */
 
     /* Success, info, warning colors - adjusted for dark mode */
     --success: 160 84% 44%;
     --info: 217 91% 65%;
-    --warning: 38 92% 55%;
+    --warning: 38 70% 55%;
+    /* Lighter gold */
   }
 }
 

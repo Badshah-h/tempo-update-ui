@@ -33,8 +33,8 @@ const WidgetConfig = () => {
   const [config, setConfig] = useState({
     title: "AI Assistant",
     subtitle: "Ask me anything!",
-    primaryColor: "#4f46e5",
-    secondaryColor: "#f3f4f6",
+    primaryColor: "#D39931",
+    secondaryColor: "#F6F7FA",
     position: "bottom-right",
     initiallyOpen: false,
     welcomeMessage: "Hello! How can I help you today?",

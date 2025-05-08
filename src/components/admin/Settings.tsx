@@ -44,8 +44,8 @@ const Settings = () => {
     const [fontFamily, setFontFamily] = useState("Inter");
     const [borderRadius, setBorderRadius] = useState(8);
     const [spacing, setSpacing] = useState("comfortable");
-    const [primaryColor, setPrimaryColor] = useState("#4f46e5");
-    const [accentColor, setAccentColor] = useState("#10b981");
+    const [primaryColor, setPrimaryColor] = useState("#D39931");
+    const [accentColor, setAccentColor] = useState("#020817");
 
     const containerVariants = {
         hidden: { opacity: 0 },

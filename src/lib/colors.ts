@@ -1,137 +1,137 @@
 // Professional color palette for the admin UI
 export const colors = {
-  // Primary colors
+  // Primary colors - Gold/Amber
   primary: {
-    50: '#eef2ff',
-    100: '#e0e7ff',
-    200: '#c7d2fe',
-    300: '#a5b4fc',
-    400: '#818cf8',
-    500: '#6366f1', // Main primary color
-    600: '#4f46e5',
-    700: '#4338ca',
-    800: '#3730a3',
-    900: '#312e81',
-    950: '#1e1b4b',
+    50: '#fdf8eb',
+    100: '#faefd0',
+    200: '#f6e0a1',
+    300: '#f1d072',
+    400: '#edc143',
+    500: '#D39931', // Main primary color
+    600: '#b37a28',
+    700: '#935c1f',
+    800: '#734016',
+    900: '#522c0e',
+    950: '#311a07',
   },
-  
-  // Secondary colors - Teal
+
+  // Secondary colors - Dark Blue
   secondary: {
-    50: '#f0fdfa',
-    100: '#ccfbf1',
-    200: '#99f6e4',
-    300: '#5eead4',
-    400: '#2dd4bf',
-    500: '#14b8a6', // Main secondary color
-    600: '#0d9488',
-    700: '#0f766e',
-    800: '#115e59',
-    900: '#134e4a',
-    950: '#042f2e',
+    50: '#f0f4ff',
+    100: '#dbe4ff',
+    200: '#bac8ff',
+    300: '#8da3ff',
+    400: '#5a72ff',
+    500: '#3445ff', // Main secondary color
+    600: '#1d2be0',
+    700: '#1621b3',
+    800: '#111a8a',
+    900: '#0c1361',
+    950: '#020817', // Very dark blue
   },
-  
-  // Accent colors - Amber
+
+  // Accent colors - Gold/Amber (same as primary for consistency)
   accent: {
-    50: '#fffbeb',
-    100: '#fef3c7',
-    200: '#fde68a',
-    300: '#fcd34d',
-    400: '#fbbf24',
-    500: '#f59e0b', // Main accent color
-    600: '#d97706',
-    700: '#b45309',
-    800: '#92400e',
-    900: '#78350f',
-    950: '#451a03',
+    50: '#fdf8eb',
+    100: '#faefd0',
+    200: '#f6e0a1',
+    300: '#f1d072',
+    400: '#edc143',
+    500: '#D39931', // Main accent color
+    600: '#b37a28',
+    700: '#935c1f',
+    800: '#734016',
+    900: '#522c0e',
+    950: '#311a07',
   },
-  
+
   // Neutral colors
   neutral: {
-    50: '#fafafa',
-    100: '#f5f5f5',
-    200: '#e5e5e5',
-    300: '#d4d4d4',
-    400: '#a3a3a3',
-    500: '#737373',
-    600: '#525252',
-    700: '#404040',
-    800: '#262626',
-    900: '#171717',
-    950: '#0a0a0a',
+    50: '#F6F7FA', // Light gray/off-white
+    100: '#ebedf2',
+    200: '#d5d9e5',
+    300: '#b3bbd0',
+    400: '#8c97b7',
+    500: '#6b7799',
+    600: '#525c7a',
+    700: '#3e4660',
+    800: '#2a3045',
+    900: '#1a1e2c',
+    950: '#020817', // Very dark blue
   },
-  
+
   // Success, error, warning colors
   success: '#10b981', // Emerald-500
   error: '#ef4444',   // Red-500
-  warning: '#f59e0b', // Amber-500
+  warning: '#D39931', // Gold/Amber
   info: '#3b82f6',    // Blue-500
-  
+
   // Background colors
   background: {
-    light: '#ffffff',
-    dark: '#121212',
-    lightMuted: '#f9fafb',
-    darkMuted: '#1f2937',
+    light: '#FFFFFF', // White
+    dark: '#020817',  // Very dark blue
+    lightMuted: '#F6F7FA', // Light gray/off-white
+    darkMuted: '#111a8a', // Slightly lighter dark blue
   },
-  
+
   // Text colors
   text: {
     light: {
-      primary: '#171717',
-      secondary: '#525252',
-      muted: '#737373',
+      primary: '#020817', // Very dark blue
+      secondary: '#3e4660',
+      muted: '#6b7799',
     },
     dark: {
-      primary: '#f5f5f5',
-      secondary: '#d4d4d4',
-      muted: '#a3a3a3',
+      primary: '#FFFFFF', // White
+      secondary: '#F6F7FA', // Light gray/off-white
+      muted: '#d5d9e5',
     },
   },
 };
 
 // Color themes
 export const lightTheme = {
-  background: colors.background.light,
-  backgroundMuted: colors.background.lightMuted,
-  text: colors.text.light.primary,
-  textSecondary: colors.text.light.secondary,
-  textMuted: colors.text.light.muted,
-  primary: colors.primary[600],
-  primaryHover: colors.primary[700],
-  primaryMuted: colors.primary[100],
-  secondary: colors.secondary[500],
-  secondaryHover: colors.secondary[600],
-  secondaryMuted: colors.secondary[100],
-  accent: colors.accent[500],
-  accentHover: colors.accent[600],
-  accentMuted: colors.accent[100],
-  border: colors.neutral[200],
-  borderHover: colors.neutral[300],
+  background: '#FFFFFF', // White
+  backgroundMuted: '#F6F7FA', // Light gray/off-white
+  text: '#020817', // Very dark blue
+  textSecondary: '#3e4660',
+  textMuted: '#6b7799',
+  primary: '#D39931', // Gold/Amber
+  primaryHover: '#b37a28', // Darker gold
+  primaryMuted: '#faefd0', // Light gold
+  secondary: '#020817', // Very dark blue
+  secondaryHover: '#1a1e2c', // Slightly lighter dark blue
+  secondaryMuted: '#F6F7FA', // Light gray/off-white
+  accent: '#D39931', // Gold/Amber (same as primary)
+  accentHover: '#b37a28', // Darker gold
+  accentMuted: '#faefd0', // Light gold
+  border: '#d5d9e5',
+  borderHover: '#b3bbd0',
   success: colors.success,
   error: colors.error,
-  warning: colors.warning,
+  warning: '#D39931', // Gold/Amber
   info: colors.info,
 };
 
 export const darkTheme = {
-  background: colors.background.dark,
-  backgroundMuted: colors.background.darkMuted,
-  text: colors.text.dark.primary,
-  textSecondary: colors.text.dark.secondary,
-  textMuted: colors.text.dark.muted,
-  primary: colors.primary[500],
-  primaryHover: colors.primary[400],
-  primaryMuted: colors.primary[900],
-  secondary: colors.secondary[400],
-  secondaryHover: colors.secondary[300],
-  secondaryMuted: colors.secondary[900],
-  accent: colors.accent[400],
-  accentHover: colors.accent[300],
-  accentMuted: colors.accent[900],
-  border: colors.neutral[800],
-  borderHover: colors.neutral[700],
+  background: '#020817', // Very dark blue
+  backgroundMuted: '#111a8a', // Slightly lighter dark blue
+  text: '#FFFFFF', // White
+  textSecondary: '#F6F7FA', // Light gray/off-white
+  textMuted: '#d5d9e5',
+  primary: '#D39931', // Gold/Amber
+  primaryHover: '#edc143', // Lighter gold
+  primaryMuted: '#522c0e', // Dark gold
+  secondary: '#5a72ff', // Lighter blue
+  secondaryHover: '#8da3ff', // Even lighter blue
+  secondaryMuted: '#0c1361', // Dark blue
+  accent: '#D39931', // Gold/Amber (same as primary)
+  accentHover: '#edc143', // Lighter gold
+  accentMuted: '#522c0e', // Dark gold
+  border: '#2a3045',
+  borderHover: '#3e4660',
   success: colors.success,
   error: colors.error,
-  warning: colors.warning,
+  warning: '#D39931', // Gold/Amber
   info: colors.info,
 };
