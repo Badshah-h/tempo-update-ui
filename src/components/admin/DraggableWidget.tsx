@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -36,6 +36,11 @@ const DraggableWidget: React.FC<DraggableWidgetProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState(initialPosition);
 
+  // Update position if initialPosition changes (e.g. from parent component)
+  useEffect(() => {
+    setPosition(initialPosition);
+  }, [initialPosition]);
+
   const handleSizeToggle = () => {
     const newSize =
       size === "small" ? "medium" : size === "medium" ? "large" : "small";
@@ -67,6 +72,8 @@ const DraggableWidget: React.FC<DraggableWidgetProps> = ({
       style={{
         gridArea,
         zIndex: isDragging ? 50 : 1,
+        x: position.x,
+        y: position.y,
       }}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{
@@ -77,13 +84,13 @@ const DraggableWidget: React.FC<DraggableWidgetProps> = ({
       }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
       drag={isDraggable}
-      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-      dragElastic={0.1}
-      dragMomentum={false}
+      dragConstraints={false} // Remove constraints for smoother dragging
+      dragTransition={{ power: 0.2, timeConstant: 200 }} // Optimize drag physics
+      dragElastic={0} // Remove elasticity for more direct control
+      dragMomentum={false} // Disable momentum for precise positioning
       onDragStart={() => setIsDragging(true)}
       onDragEnd={handleDragEnd}
       whileDrag={{ scale: 1.02, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}
-      layout
     >
       <Card
         className={cn(
