@@ -54,27 +54,34 @@ const NavItem = ({
         "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all relative overflow-hidden group",
         isActive
           ? "bg-primary/10 text-primary font-medium"
-          : "text-muted-foreground hover:bg-secondary/10 hover:text-foreground"
+          : "text-muted-foreground hover:bg-secondary/10 hover:text-foreground",
       )}
     >
-      <div className={cn(
-        "flex items-center justify-center transition-all",
-        isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
-      )}>
+      <div
+        className={cn(
+          "flex items-center justify-center transition-all",
+          isActive
+            ? "text-primary"
+            : "text-muted-foreground group-hover:text-foreground",
+        )}
+      >
         {icon}
       </div>
       <span
         className={cn(
           "transition-all duration-200",
-          isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100"
+          isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100",
         )}
       >
         {label}
       </span>
       {isActive && (
         <>
-          <span className="absolute left-0 top-0 h-full w-1 bg-primary rounded-r-md" />
-          <span className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary to-secondary rounded-tr-md" style={{ width: isCollapsed ? '100%' : '70%' }} />
+          <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-primary to-primary/80 rounded-r-md shadow-sm" />
+          <span
+            className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary to-primary/60 rounded-tr-md shadow-sm"
+            style={{ width: isCollapsed ? "100%" : "70%" }}
+          />
         </>
       )}
     </Link>
@@ -140,31 +147,31 @@ const AdminLayout = () => {
       {/* Sidebar */}
       <motion.aside
         className={cn(
-          "fixed inset-y-0 z-50 flex flex-col border-r bg-background",
+          "fixed inset-y-0 z-50 flex flex-col border-r bg-background/95 backdrop-blur-sm shadow-soft",
           isCollapsed ? "w-[70px]" : "w-[240px]",
-          isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+          isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
         )}
         animate={{
           width: isCollapsed ? 70 : 240,
         }}
         transition={{ duration: 0.2, ease: "easeInOut" }}
         style={{
-          backgroundImage: `radial-gradient(circle at 25px 25px, rgba(var(--primary), 0.03) 2%, transparent 0%),
-                           radial-gradient(circle at 75px 75px, rgba(var(--primary), 0.03) 2%, transparent 0%)`,
-          backgroundSize: '100px 100px',
+          backgroundImage: `radial-gradient(circle at 25px 25px, rgba(var(--primary), 0.04) 2%, transparent 0%),
+                           radial-gradient(circle at 75px 75px, rgba(var(--primary), 0.04) 2%, transparent 0%)`,
+          backgroundSize: "100px 100px",
         }}
       >
         <div className="flex h-16 items-center justify-between px-4 py-4">
           <div className="flex items-center gap-2">
-            <div className="bg-primary/10 p-2 rounded-md">
-              <MessageSquare className="h-6 w-6 text-primary" />
+            <div className="bg-primary/10 p-2 rounded-md shadow-sm border border-primary/5">
+              <MessageSquare className="h-6 w-6 text-primary drop-shadow-sm" />
             </div>
             {!isCollapsed && (
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-lg font-semibold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+                className="text-lg font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent drop-shadow-sm"
               >
                 AI Admin
               </motion.span>
@@ -179,7 +186,7 @@ const AdminLayout = () => {
             <ChevronRight
               className={cn(
                 "h-4 w-4 transition-transform",
-                isCollapsed ? "rotate-0" : "rotate-180"
+                isCollapsed ? "rotate-0" : "rotate-180",
               )}
             />
           </Button>
@@ -235,11 +242,15 @@ const AdminLayout = () => {
                   >
                     <Avatar className="h-8 w-8 border-2 border-primary/20 ring-2 ring-background">
                       <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin" />
-                      <AvatarFallback className="bg-primary/10 text-primary">AD</AvatarFallback>
+                      <AvatarFallback className="bg-primary/10 text-primary">
+                        AD
+                      </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col items-start text-sm">
                       <span className="font-medium">Admin User</span>
-                      <span className="text-xs text-muted-foreground">Administrator</span>
+                      <span className="text-xs text-muted-foreground">
+                        Administrator
+                      </span>
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
@@ -247,7 +258,9 @@ const AdminLayout = () => {
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium">Admin User</p>
-                      <p className="text-xs text-muted-foreground">admin@example.com</p>
+                      <p className="text-xs text-muted-foreground">
+                        admin@example.com
+                      </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
@@ -278,7 +291,7 @@ const AdminLayout = () => {
       <div
         className={cn(
           "flex flex-1 flex-col",
-          isCollapsed ? "lg:pl-[70px]" : "lg:pl-[240px]"
+          isCollapsed ? "lg:pl-[70px]" : "lg:pl-[240px]",
         )}
       >
         {/* Top navbar */}
@@ -304,10 +317,16 @@ const AdminLayout = () => {
             {isCollapsed && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="hover:bg-primary/5">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="hover:bg-primary/5"
+                  >
                     <Avatar className="h-8 w-8 border-2 border-primary/20 ring-2 ring-background">
                       <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin" />
-                      <AvatarFallback className="bg-primary/10 text-primary">AD</AvatarFallback>
+                      <AvatarFallback className="bg-primary/10 text-primary">
+                        AD
+                      </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
@@ -315,7 +334,9 @@ const AdminLayout = () => {
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium">Admin User</p>
-                      <p className="text-xs text-muted-foreground">admin@example.com</p>
+                      <p className="text-xs text-muted-foreground">
+                        admin@example.com
+                      </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
@@ -347,7 +368,7 @@ const AdminLayout = () => {
           style={{
             backgroundImage: `radial-gradient(circle at 100px 100px, rgba(var(--primary), 0.01) 2%, transparent 0%),
                              radial-gradient(circle at 200px 200px, rgba(var(--secondary), 0.01) 2%, transparent 0%)`,
-            backgroundSize: '300px 300px',
+            backgroundSize: "300px 300px",
           }}
         >
           <Outlet />

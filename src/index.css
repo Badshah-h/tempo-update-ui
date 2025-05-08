@@ -4,118 +4,127 @@
 
 @layer base {
   :root {
-    /* Professional color palette - Light mode */
+    /* Enhanced professional color palette - Light mode */
     --background: 0 0% 100%;
     /* #FFFFFF */
-    --foreground: 222 85% 5%;
-    /* #020817 */
+    --foreground: 222 47% 11%;
+    /* #121828 - slightly softer than pure black */
 
     --card: 0 0% 100%;
     /* #FFFFFF */
-    --card-foreground: 222 85% 5%;
-    /* #020817 */
+    --card-foreground: 222 47% 11%;
+    /* #121828 */
 
     --popover: 0 0% 100%;
     /* #FFFFFF */
-    --popover-foreground: 222 85% 5%;
-    /* #020817 */
+    --popover-foreground: 222 47% 11%;
+    /* #121828 */
 
-    /* Gold/Amber */
-    --primary: 38 64% 51%;
-    /* #D39931 */
+    /* Refined Gold/Amber */
+    --primary: 35 91% 45%;
+    /* #E6A817 - richer gold */
     --primary-foreground: 0 0% 100%;
     /* #FFFFFF */
 
-    /* Dark Blue */
-    --secondary: 222 85% 5%;
-    /* #020817 */
+    /* Rich Navy Blue */
+    --secondary: 215 25% 27%;
+    /* #2E4057 - softer navy blue */
     --secondary-foreground: 0 0% 100%;
     /* #FFFFFF */
 
-    --muted: 220 33% 97%;
-    /* #F6F7FA */
-    --muted-foreground: 222 30% 40%;
-    /* Muted dark blue */
+    --muted: 210 20% 98%;
+    /* #F8FAFC - softer background */
+    --muted-foreground: 215 16% 47%;
+    /* Muted navy blue */
 
-    /* Gold/Amber (same as primary) */
-    --accent: 38 64% 51%;
-    /* #D39931 */
-    --accent-foreground: 222 85% 5%;
-    /* #020817 */
+    /* Accent - complementary to primary */
+    --accent: 210 40% 96%;
+    /* #EDF2F7 - soft blue-gray */
+    --accent-foreground: 222 47% 11%;
+    /* #121828 */
 
     /* Red */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     /* #FFFFFF */
 
-    --border: 220 33% 97%;
-    /* #F6F7FA */
-    --input: 220 33% 97%;
-    /* #F6F7FA */
-    --ring: 38 64% 51%;
-    /* #D39931 */
+    --border: 214 32% 91%;
+    /* #E2E8F0 - subtle border */
+    --input: 214 32% 91%;
+    /* #E2E8F0 */
+    --ring: 35 91% 45%;
+    /* #E6A817 */
 
     --radius: 0.5rem;
 
     /* Success, info, warning colors */
-    --success: 160 84% 39%;
-    --info: 217 91% 60%;
-    --warning: 38 64% 51%;
-    /* #D39931 */
+    --success: 142 71% 45%;
+    /* #2DD4BF - teal */
+    --info: 221 83% 53%;
+    /* #3B82F6 - blue */
+    --warning: 35 91% 45%;
+    /* #E6A817 - gold */
   }
 
   .dark {
-    /* Professional color palette - Dark mode */
-    --background: 222 85% 5%;
-    /* #020817 */
-    --foreground: 0 0% 100%;
-    /* #FFFFFF */
+    /* Enhanced professional color palette - Dark mode */
+    --background: 222 47% 11%;
+    /* #121828 - rich dark blue */
+    --foreground: 210 40% 98%;
+    /* #F8FAFC - off-white */
 
-    --card: 222 85% 8%;
-    /* Slightly lighter dark blue */
-    --card-foreground: 0 0% 100%;
-    /* #FFFFFF */
+    --card: 222 47% 14%;
+    /* #1A223A - slightly lighter dark blue */
+    --card-foreground: 210 40% 98%;
+    /* #F8FAFC */
 
-    --popover: 222 85% 8%;
-    /* Slightly lighter dark blue */
-    --popover-foreground: 0 0% 100%;
-    /* #FFFFFF */
+    --popover: 222 47% 14%;
+    /* #1A223A */
+    --popover-foreground: 210 40% 98%;
+    /* #F8FAFC */
 
-    /* Gold/Amber - lighter in dark mode */
-    --primary: 38 70% 55%;
-    /* Lighter gold */
-    --primary-foreground: 222 85% 5%;
-    /* #020817 */
+    /* Gold - brighter in dark mode */
+    --primary: 35 91% 55%;
+    /* #F7B731 - brighter gold */
+    --primary-foreground: 222 47% 11%;
+    /* #121828 */
 
-    /* Dark Blue - lighter in dark mode */
-    --secondary: 222 85% 20%;
-    /* Lighter dark blue */
-    --secondary-foreground: 0 0% 100%;
-    /* #FFFFFF */
+    /* Navy Blue - lighter in dark mode */
+    --secondary: 215 25% 40%;
+    /* #4A6285 - medium navy blue */
+    --secondary-foreground: 210 40% 98%;
+    /* #F8FAFC */
 
-    --muted: 222 30% 15%;
-    --muted-foreground: 220 20% 80%;
+    --muted: 217 33% 17%;
+    /* #1E293B - deep blue-gray */
+    --muted-foreground: 215 20% 75%;
+    /* #A9B8D5 - soft blue-gray */
 
-    /* Gold/Amber - lighter in dark mode */
-    --accent: 38 70% 55%;
-    /* Lighter gold */
-    --accent-foreground: 222 85% 5%;
-    /* #020817 */
+    /* Accent - subtle in dark mode */
+    --accent: 217 33% 20%;
+    /* #233047 - deep blue-gray */
+    --accent-foreground: 210 40% 98%;
+    /* #F8FAFC */
 
     /* Red - adjusted for dark mode */
-    --destructive: 0 84% 50%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    /* #F8FAFC */
 
-    --border: 222 30% 15%;
-    --input: 222 30% 15%;
-    --ring: 38 70% 55%;
-    /* Lighter gold */
+    --border: 217 33% 25%;
+    /* #2D3A58 - subtle border */
+    --input: 217 33% 25%;
+    /* #2D3A58 */
+    --ring: 35 91% 55%;
+    /* #F7B731 */
 
     /* Success, info, warning colors - adjusted for dark mode */
-    --success: 160 84% 44%;
-    --info: 217 91% 65%;
-    --warning: 38 70% 55%;
-    /* Lighter gold */
+    --success: 142 71% 50%;
+    /* #34D399 - brighter teal */
+    --info: 221 83% 65%;
+    /* #60A5FA - brighter blue */
+    --warning: 35 91% 55%;
+    /* #F7B731 - brighter gold */
   }
 }
 

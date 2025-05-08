@@ -55,15 +55,15 @@ const MessageInput: React.FC<MessageInputProps> = ({
   }, []);
 
   return (
-    <div className="bg-background border-t p-3 rounded-b-lg">
+    <div className="bg-background border-t p-4 rounded-b-lg">
       {showSuggestions && suggestedQuestions.length > 0 && (
-        <div className="mb-3 flex flex-wrap gap-2">
+        <div className="mb-4 flex flex-wrap gap-2">
           {suggestedQuestions.map((question, index) => (
             <Button
               key={index}
               variant="outline"
               size="sm"
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors bg-accent/50 border-accent-foreground/10 hover:bg-accent hover:border-accent-foreground/20 rounded-full px-3"
               onClick={() => {
                 onSuggestedQuestionClick(question);
                 setShowSuggestions(false);
@@ -83,13 +83,13 @@ const MessageInput: React.FC<MessageInputProps> = ({
                 type="button"
                 size="icon"
                 variant="ghost"
-                className="rounded-full flex-shrink-0"
+                className="rounded-full flex-shrink-0 hover:bg-accent/50"
                 onClick={() => setShowSuggestions(!showSuggestions)}
               >
                 <PlusIcon className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="top">
+            <TooltipContent side="top" className="font-medium">
               <p>Show suggestions</p>
             </TooltipContent>
           </Tooltip>
@@ -103,7 +103,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           disabled={isLoading}
-          className="flex-1 bg-background border-muted focus-visible:ring-primary"
+          className="flex-1 bg-background border-muted focus-visible:ring-primary rounded-full px-4 shadow-inner-soft"
         />
 
         <TooltipProvider>
@@ -113,13 +113,13 @@ const MessageInput: React.FC<MessageInputProps> = ({
                 type="button"
                 size="icon"
                 variant="ghost"
-                className="rounded-full flex-shrink-0"
+                className="rounded-full flex-shrink-0 hover:bg-accent/50"
                 disabled={isLoading}
               >
                 <MicIcon className="h-4 w-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="top">
+            <TooltipContent side="top" className="font-medium">
               <p>Voice input (coming soon)</p>
             </TooltipContent>
           </Tooltip>
@@ -129,7 +129,15 @@ const MessageInput: React.FC<MessageInputProps> = ({
           type="submit"
           size="icon"
           disabled={!message.trim() || isLoading}
-          className="rounded-full bg-primary hover:bg-primary/90 flex-shrink-0"
+          className="rounded-full flex-shrink-0 shadow-sm transition-all duration-200"
+          style={{
+            background:
+              message.trim() && !isLoading
+                ? "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary)/0.85))"
+                : undefined,
+            transform:
+              message.trim() && !isLoading ? "scale(1.05)" : "scale(1)",
+          }}
         >
           <SendIcon className="h-4 w-4" />
         </Button>

@@ -2,10 +2,10 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -51,11 +51,28 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        success: "hsl(var(--success))",
+        info: "hsl(var(--info))",
+        warning: "hsl(var(--warning))",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        soft: "0 2px 10px rgba(0, 0, 0, 0.05)",
+        medium: "0 4px 20px rgba(0, 0, 0, 0.08)",
+        hard: "0 8px 30px rgba(0, 0, 0, 0.12)",
+        "inner-soft": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)",
+        highlight: "0 0 0 2px rgba(230, 168, 23, 0.2)",
+      },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-subtle":
+          "linear-gradient(to right, var(--tw-gradient-stops))",
+        "gradient-card":
+          "linear-gradient(to bottom right, var(--tw-gradient-stops))",
       },
       keyframes: {
         "accordion-down": {
@@ -66,12 +83,51 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "pulse-subtle": {
+          "0%, 100%": { opacity: 1 },
+          "50%": { opacity: 0.8 },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-5px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-subtle": "pulse-subtle 3s ease-in-out infinite",
+        float: "float 5s ease-in-out infinite",
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: "65ch",
+            color: "hsl(var(--foreground))",
+            a: {
+              color: "hsl(var(--primary))",
+              "&:hover": {
+                color: "hsl(var(--primary))",
+              },
+            },
+            strong: {
+              color: "hsl(var(--foreground))",
+            },
+            h1: {
+              color: "hsl(var(--foreground))",
+            },
+            h2: {
+              color: "hsl(var(--foreground))",
+            },
+            h3: {
+              color: "hsl(var(--foreground))",
+            },
+            h4: {
+              color: "hsl(var(--foreground))",
+            },
+          },
+        },
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

@@ -34,16 +34,20 @@ const ChatWidget = ({
 }: ChatWidgetProps) => {
   const [isOpen, setIsOpen] = useState(initiallyOpen);
   const [isMaximized, setIsMaximized] = useState(false);
-  
+
   // Use the chat hook to manage messages and sending
   const { messages, isLoading, sendMessage } = useChat({
     conversationId,
-    initialMessages: isOpen ? [{
-      id: "welcome",
-      content: welcomeMessage,
-      sender: "ai",
-      timestamp: new Date(),
-    }] : [],
+    initialMessages: isOpen
+      ? [
+          {
+            id: "welcome",
+            content: welcomeMessage,
+            sender: "ai",
+            timestamp: new Date(),
+          },
+        ]
+      : [],
   });
 
   // Position classes based on the position prop
@@ -80,7 +84,7 @@ const ChatWidget = ({
 
     // Call the onSendMessage prop if provided
     onSendMessage?.(message);
-    
+
     // Use the sendMessage function from the hook
     await sendMessage(message);
   };
@@ -98,10 +102,18 @@ const ChatWidget = ({
           >
             <Button
               onClick={handleToggleWidget}
-              className="h-14 w-14 rounded-full shadow-lg"
-              style={{ backgroundColor: primaryColor }}
+              className="h-14 w-14 rounded-full shadow-medium hover:shadow-hard transition-shadow duration-300"
+              style={{
+                background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}dd)`,
+                border: "2px solid rgba(255, 255, 255, 0.1)",
+              }}
             >
-              <MessageCircle className="h-6 w-6 text-white" />
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+              >
+                <MessageCircle className="h-6 w-6 text-white drop-shadow-sm" />
+              </motion.div>
             </Button>
           </motion.div>
         ) : (
@@ -112,14 +124,18 @@ const ChatWidget = ({
             transition={{ duration: 0.3 }}
             className={`flex flex-col ${isMaximized ? "fixed inset-4 sm:inset-10 md:inset-20" : "w-[350px] h-[500px]"}`}
           >
-            <Card className="flex flex-col h-full overflow-hidden shadow-xl border bg-background">
+            <Card className="flex flex-col h-full overflow-hidden shadow-hard border bg-background rounded-xl">
               {/* Chat Header */}
               <div
                 className="flex items-center justify-between p-4 border-b"
-                style={{ backgroundColor: primaryColor }}
+                style={{
+                  background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}dd)`,
+                  borderTopLeftRadius: "calc(var(--radius) - 2px)",
+                  borderTopRightRadius: "calc(var(--radius) - 2px)",
+                }}
               >
                 <div className="flex items-center space-x-3">
-                  <div className="h-8 w-8 rounded-full overflow-hidden bg-white/10">
+                  <div className="h-9 w-9 rounded-full overflow-hidden bg-white/10 border-2 border-white/20 shadow-sm">
                     <img
                       src={avatarUrl}
                       alt="AI Assistant"
@@ -127,8 +143,10 @@ const ChatWidget = ({
                     />
                   </div>
                   <div>
-                    <h3 className="font-medium text-white">{title}</h3>
-                    <p className="text-xs text-white/80">{subtitle}</p>
+                    <h3 className="font-semibold text-white drop-shadow-sm">
+                      {title}
+                    </h3>
+                    <p className="text-xs text-white/90">{subtitle}</p>
                   </div>
                 </div>
                 <div className="flex space-x-2">
@@ -136,7 +154,7 @@ const ChatWidget = ({
                     variant="ghost"
                     size="icon"
                     onClick={handleToggleMaximize}
-                    className="h-8 w-8 text-white hover:bg-white/20"
+                    className="h-8 w-8 text-white hover:bg-white/20 rounded-full"
                   >
                     {isMaximized ? (
                       <Minimize2 className="h-4 w-4" />
@@ -148,7 +166,7 @@ const ChatWidget = ({
                     variant="ghost"
                     size="icon"
                     onClick={handleClose}
-                    className="h-8 w-8 text-white hover:bg-white/20"
+                    className="h-8 w-8 text-white hover:bg-white/20 rounded-full"
                   >
                     <X className="h-4 w-4" />
                   </Button>
@@ -157,10 +175,7 @@ const ChatWidget = ({
 
               {/* Messages Container */}
               <div className="flex-1 overflow-hidden">
-                <MessageList
-                  messages={messages}
-                  isLoading={isLoading}
-                />
+                <MessageList messages={messages} isLoading={isLoading} />
               </div>
 
               {/* Input Area */}
