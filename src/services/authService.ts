@@ -6,6 +6,39 @@ const API_URL = "http://localhost:8000/api";
 // Set up axios with credentials
 axios.defaults.withCredentials = true;
 
+// Add CSRF token to all requests
+axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+// Add response interceptor to handle CSRF token mismatches
+axios.interceptors.response.use(
+  response => response,
+  async error => {
+    // Handle CSRF token mismatch (status 419)
+    if (error.response && error.response.status === 419) {
+      console.log("CSRF token mismatch detected, refreshing token...");
+
+      try {
+        // Get a fresh CSRF token
+        await axios.get(`${API_URL.replace('/api', '')}/sanctum/csrf-cookie`);
+
+        // Update the token in headers
+        const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        if (token) {
+          axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
+        }
+
+        // Retry the original request
+        return axios(error.config);
+      } catch (refreshError) {
+        console.error("Failed to refresh CSRF token:", refreshError);
+        return Promise.reject(error);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 // Types
 export interface RegisterData {
   name: string;
@@ -39,7 +72,8 @@ export interface User {
 // Get CSRF token from Laravel Sanctum
 const getCsrfToken = async () => {
   try {
-    await axios.get("/sanctum/csrf-cookie");
+    // The URL should be the Laravel backend URL without 'api/' for the sanctum endpoint
+    await axios.get(`${API_URL.replace('/api', '')}/sanctum/csrf-cookie`);
   } catch (error) {
     console.error("Failed to get CSRF token:", error);
     throw error;

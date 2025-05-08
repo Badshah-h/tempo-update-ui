@@ -29,6 +29,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import ThemeSwitcher from "./ThemeSwitcher";
+import { usePermissions } from "@/hooks/usePermissions";
 
 interface NavItemProps {
   icon: React.ReactNode;

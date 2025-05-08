@@ -68,8 +68,8 @@ const RegisterForm: React.FC = () => {
     clearError();
 
     try {
-      await registerUser(data);
-      navigate("/"); // Redirect to home page after successful registration
+      await registerUser(data as any);
+      navigate("/admin"); // Redirect to admin dashboard after successful registration
     } catch (err: any) {
       if (err.errors) {
         // Handle validation errors

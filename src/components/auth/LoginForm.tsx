@@ -53,8 +53,8 @@ const LoginForm: React.FC = () => {
     clearError();
 
     try {
-      await login(data);
-      navigate("/"); // Redirect to home page after successful login
+      await login(data as any);
+      navigate("/admin"); // Redirect to admin dashboard after successful login
     } catch (err: any) {
       if (err.errors) {
         // Handle validation errors
