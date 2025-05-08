@@ -36,11 +36,24 @@ export interface User {
   updated_at: string;
 }
 
+// Get CSRF token from Laravel Sanctum
+const getCsrfToken = async () => {
+  try {
+    await axios.get("/sanctum/csrf-cookie");
+  } catch (error) {
+    console.error("Failed to get CSRF token:", error);
+    throw error;
+  }
+};
+
 // Authentication service
 const authService = {
   // Register a new user
   register: async (data: RegisterData): Promise<AuthResponse> => {
     try {
+      // Get CSRF token first
+      await getCsrfToken();
+
       const response = await axios.post(`${API_URL}/register`, data);
       if (response.data.token) {
         localStorage.setItem("auth_token", response.data.token);
@@ -58,6 +71,9 @@ const authService = {
   // Login user
   login: async (data: LoginData): Promise<AuthResponse> => {
     try {
+      // Get CSRF token first
+      await getCsrfToken();
+
       const response = await axios.post(`${API_URL}/login`, data);
       if (response.data.token) {
         localStorage.setItem("auth_token", response.data.token);
@@ -75,6 +91,9 @@ const authService = {
   // Logout user
   logout: async (): Promise<AuthResponse> => {
     try {
+      // Get CSRF token first
+      await getCsrfToken();
+
       const token = localStorage.getItem("auth_token");
       const response = await axios.post(
         `${API_URL}/logout`,
