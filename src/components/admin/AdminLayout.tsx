@@ -54,14 +54,14 @@ const NavItem = ({
         "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all",
         isActive
           ? "bg-primary text-primary-foreground"
-          : "text-muted-foreground hover:bg-secondary hover:text-foreground",
+          : "text-muted-foreground hover:bg-secondary hover:text-foreground"
       )}
     >
       {icon}
       <span
         className={cn(
           "transition-opacity",
-          isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100",
+          isCollapsed ? "opacity-0 w-0 hidden" : "opacity-100"
         )}
       >
         {label}
@@ -134,7 +134,7 @@ const AdminLayout = () => {
         className={cn(
           "fixed inset-y-0 z-50 flex flex-col border-r bg-background",
           isCollapsed ? "w-[70px]" : "w-[240px]",
-          isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
+          isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
         animate={{
           width: isCollapsed ? 70 : 240,
@@ -164,7 +164,7 @@ const AdminLayout = () => {
             <ChevronRight
               className={cn(
                 "h-4 w-4 transition-transform",
-                isCollapsed ? "rotate-0" : "rotate-180",
+                isCollapsed ? "rotate-0" : "rotate-180"
               )}
             />
           </Button>
@@ -253,7 +253,7 @@ const AdminLayout = () => {
       <div
         className={cn(
           "flex flex-1 flex-col",
-          isCollapsed ? "lg:pl-[70px]" : "lg:pl-[240px]",
+          isCollapsed ? "lg:pl-[70px]" : "lg:pl-[240px]"
         )}
       >
         {/* Top navbar */}
