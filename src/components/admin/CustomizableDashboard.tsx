@@ -64,6 +64,7 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
     toast({
       title: "Widget Added",
       description: `${title} has been added to your dashboard.`,
+      variant: "default",
     });
   };
 
@@ -106,6 +107,7 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
     toast({
       title: "Layout Saved",
       description: "Your dashboard layout has been saved.",
+      variant: "default",
     });
   };
 
@@ -115,6 +117,7 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
     toast({
       title: "Layout Reset",
       description: "Your dashboard has been reset to default.",
+      variant: "default",
     });
   };
 
@@ -193,19 +196,50 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsContent value="grid" className="mt-4 w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-            {widgets.map((widget) => (
-              <DraggableWidget
+            {widgets.map((widget, index) => (
+              <motion.div
                 key={widget.id}
-                id={widget.id}
-                title={widget.title}
-                initialSize={widget.size}
-                onRemove={() => handleRemoveWidget(widget.id)}
-                onSizeChange={handleSizeChange}
-                className={`${widget.size === "large" ? "col-span-2 row-span-2" : ""}`}
-                isDraggable={false}
+                initial={{
+                  x: widget.position.x,
+                  y: widget.position.y,
+                  opacity: 0,
+                  scale: 0.9,
+                }}
+                animate={{
+                  x: widget.position.x,
+                  y: widget.position.y,
+                  opacity: 1,
+                  scale: 1,
+                }}
+                className="absolute"
+                style={{
+                  width:
+                    widget.size === "small"
+                      ? "300px"
+                      : widget.size === "medium"
+                        ? "400px"
+                        : "500px",
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 25,
+                  delay: index * 0.1,
+                }}
               >
-                {renderWidget(widget.type, widget.id)}
-              </DraggableWidget>
+                <DraggableWidget
+                  id={widget.id}
+                  title={widget.title}
+                  initialSize={widget.size}
+                  initialPosition={widget.position}
+                  onRemove={() => handleRemoveWidget(widget.id)}
+                  onPositionChange={handlePositionChange}
+                  onSizeChange={handleSizeChange}
+                  isDraggable={true}
+                >
+                  {renderWidget(widget.type, widget.id)}
+                </DraggableWidget>
+              </motion.div>
             ))}
           </div>
         </TabsContent>

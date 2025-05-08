@@ -129,7 +129,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
           type="submit"
           size="icon"
           disabled={!message.trim() || isLoading}
-          className="rounded-full flex-shrink-0 shadow-sm transition-all duration-200"
+          className="rounded-full flex-shrink-0 shadow-sm transition-all duration-300"
           style={{
             background:
               message.trim() && !isLoading
@@ -137,6 +137,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
                 : undefined,
             transform:
               message.trim() && !isLoading ? "scale(1.05)" : "scale(1)",
+            boxShadow:
+              message.trim() && !isLoading
+                ? "0 0 15px rgba(var(--primary), 0.3)"
+                : undefined,
           }}
         >
           <SendIcon className="h-4 w-4" />

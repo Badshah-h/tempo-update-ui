@@ -45,18 +45,19 @@ const StatsWidget: React.FC<StatsWidgetProps> = ({
 
   return (
     <motion.div
-      className="relative overflow-hidden rounded-lg border bg-card p-6"
+      className="relative overflow-hidden rounded-lg border bg-card p-6 backdrop-blur-sm"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      whileHover={{ y: -5 }}
+      whileHover={{ y: -5, boxShadow: "0 15px 30px rgba(0,0,0,0.1)" }}
     >
       <div
-        className="absolute top-0 right-0 h-24 w-24 -mt-8 -mr-8 rounded-full bg-gradient-radial opacity-70"
+        className="absolute top-0 right-0 h-28 w-28 -mt-10 -mr-10 rounded-full bg-gradient-radial opacity-70"
         style={{
           background: `radial-gradient(circle, var(--${color === "primary" ? "primary" : color}) 0%, transparent 70%)`,
         }}
       />
+      <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-20" />
 
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>

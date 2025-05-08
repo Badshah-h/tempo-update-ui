@@ -148,7 +148,7 @@ const AdminLayout = () => {
       {/* Sidebar */}
       <motion.aside
         className={cn(
-          "fixed inset-y-0 z-50 flex flex-col border-r bg-background/95 backdrop-blur-sm shadow-soft",
+          "fixed inset-y-0 z-50 flex flex-col border-r bg-background/95 backdrop-blur-sm shadow-premium",
           isCollapsed ? "w-[70px]" : "w-[240px]",
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
         )}
@@ -157,10 +157,9 @@ const AdminLayout = () => {
         }}
         transition={{ duration: 0.2, ease: "easeInOut" }}
         style={{
-          backgroundImage: `radial-gradient(circle at 25px 25px, rgba(var(--primary), 0.04) 2%, transparent 0%),
-                           radial-gradient(circle at 75px 75px, rgba(var(--primary), 0.04) 2%, transparent 0%)`,
+          backgroundImage: `radial-gradient(circle at 25px 25px, rgba(var(--primary), 0.05) 2%, transparent 0%),
+                           radial-gradient(circle at 75px 75px, rgba(var(--primary), 0.05) 2%, transparent 0%)`,
           backgroundSize: "100px 100px",
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
         }}
       >
         <div className="flex h-16 items-center justify-between px-4 py-4">
@@ -302,7 +301,7 @@ const AdminLayout = () => {
         )}
       >
         {/* Top navbar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center border-b bg-background/80 backdrop-blur-sm px-6">
+        <header className="sticky top-0 z-30 flex h-16 items-center border-b bg-background/80 backdrop-blur-sm px-6 shadow-soft">
           {/* Sidebar toggle for mobile */}
           <Button
             variant="ghost"
@@ -396,14 +395,7 @@ const AdminLayout = () => {
         </header>
 
         {/* Page content */}
-        <main
-          className="flex-1 overflow-auto w-full"
-          style={{
-            backgroundImage: `radial-gradient(circle at 100px 100px, rgba(var(--primary), 0.01) 2%, transparent 0%),
-                             radial-gradient(circle at 200px 200px, rgba(var(--secondary), 0.01) 2%, transparent 0%)`,
-            backgroundSize: "300px 300px",
-          }}
-        >
+        <main className="flex-1 overflow-auto w-full bg-gradient-mesh">
           <Outlet />
         </main>
       </div>

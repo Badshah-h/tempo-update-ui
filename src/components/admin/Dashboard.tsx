@@ -41,6 +41,8 @@ const Dashboard = () => {
       "standard",
   );
 
+  const useEffect = React.useEffect;
+
   // Save the active view preference to localStorage
   useEffect(() => {
     localStorage.setItem("dashboardView", activeView);
@@ -424,43 +426,13 @@ const Dashboard = () => {
                 >
                   {/* Stats Cards with Enhanced Animation */}
                   <motion.div variants={itemVariants}>
-                    <Card
-                      className={`overflow-hidden ${showCustomize ? "hover:shadow-xl transition-shadow duration-300 hover:-translate-y-1" : ""}`}
-                    >
-                      <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                        <CardTitle className="text-sm font-medium">
-                          Total Users
-                        </CardTitle>
-                        <div
-                          className={`p-2 rounded-lg bg-primary/10 ${showCustomize ? "animate-pulse-subtle" : ""}`}
-                        >
-                          <Users className="h-4 w-4 text-primary" />
-                        </div>
+                    <Card className="overflow-hidden border border-border/60 hover:border-primary/20 transition-colors duration-300 shadow-soft hover:shadow-card-hover">
+                      <CardHeader>
+                        <CardTitle>Colors & Branding</CardTitle>
+                        <CardDescription>
+                          Customize the colors to match your brand identity
+                        </CardDescription>
                       </CardHeader>
-                      <CardContent>
-                        <div className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-                          12,546
-                        </div>
-                        <div className="flex items-center text-xs text-muted-foreground mt-1">
-                          <ArrowUpRight className="h-3 w-3 mr-1 text-emerald-500" />
-                          <span className="text-emerald-500 font-medium">
-                            +12.5%
-                          </span>
-                          <span className="ml-1">from last month</span>
-                        </div>
-                        <div className="mt-3 h-2 w-full bg-secondary rounded-full overflow-hidden">
-                          <motion.div
-                            className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full"
-                            initial={{ width: 0 }}
-                            animate={{ width: "75%" }}
-                            transition={{
-                              delay: 0.2,
-                              duration: 0.8,
-                              ease: "easeOut",
-                            }}
-                          />
-                        </div>
-                      </CardContent>
                     </Card>
                   </motion.div>
 

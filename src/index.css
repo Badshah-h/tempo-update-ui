@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* Enhanced professional color palette - Light mode */
+    /* Premium professional color palette - Light mode */
     --background: 0 0% 100%;
     /* #FFFFFF */
     --foreground: 222 47% 11%;
@@ -20,15 +20,15 @@
     --popover-foreground: 222 47% 11%;
     /* #121828 */
 
-    /* Refined Gold/Amber */
-    --primary: 35 91% 45%;
-    /* #E6A817 - richer gold */
+    /* Refined Gold/Amber - More vibrant */
+    --primary: 35 95% 50%;
+    /* #F5A623 - vibrant gold */
     --primary-foreground: 0 0% 100%;
     /* #FFFFFF */
 
-    /* Rich Navy Blue */
-    --secondary: 215 25% 27%;
-    /* #2E4057 - softer navy blue */
+    /* Rich Navy Blue - More saturated */
+    --secondary: 215 30% 30%;
+    /* #2E4057 - richer navy blue */
     --secondary-foreground: 0 0% 100%;
     /* #FFFFFF */
 
@@ -43,7 +43,7 @@
     --accent-foreground: 222 47% 11%;
     /* #121828 */
 
-    /* Red */
+    /* Red - More vibrant */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     /* #FFFFFF */
@@ -52,22 +52,22 @@
     /* #E2E8F0 - subtle border */
     --input: 214 32% 91%;
     /* #E2E8F0 */
-    --ring: 35 91% 45%;
-    /* #E6A817 */
+    --ring: 35 95% 50%;
+    /* #F5A623 */
 
     --radius: 0.5rem;
 
-    /* Success, info, warning colors */
-    --success: 142 71% 45%;
-    /* #2DD4BF - teal */
-    --info: 221 83% 53%;
-    /* #3B82F6 - blue */
-    --warning: 35 91% 45%;
-    /* #E6A817 - gold */
+    /* Success, info, warning colors - More vibrant */
+    --success: 160 84% 39%;
+    /* #10B981 - vibrant teal */
+    --info: 217 91% 60%;
+    /* #3B82F6 - vibrant blue */
+    --warning: 35 95% 50%;
+    /* #F5A623 - vibrant gold */
   }
 
   .dark {
-    /* Enhanced professional color palette - Dark mode */
+    /* Premium professional color palette - Dark mode */
     --background: 222 47% 11%;
     /* #121828 - rich dark blue */
     --foreground: 210 40% 98%;
@@ -84,13 +84,13 @@
     /* #F8FAFC */
 
     /* Gold - brighter in dark mode */
-    --primary: 35 91% 55%;
+    --primary: 35 95% 60%;
     /* #F7B731 - brighter gold */
     --primary-foreground: 222 47% 11%;
     /* #121828 */
 
     /* Navy Blue - lighter in dark mode */
-    --secondary: 215 25% 40%;
+    --secondary: 215 30% 45%;
     /* #4A6285 - medium navy blue */
     --secondary-foreground: 210 40% 98%;
     /* #F8FAFC */
@@ -107,7 +107,7 @@
     /* #F8FAFC */
 
     /* Red - adjusted for dark mode */
-    --destructive: 0 84% 60%;
+    --destructive: 0 90% 65%;
     --destructive-foreground: 210 40% 98%;
     /* #F8FAFC */
 
@@ -115,15 +115,15 @@
     /* #2D3A58 - subtle border */
     --input: 217 33% 25%;
     /* #2D3A58 */
-    --ring: 35 91% 55%;
+    --ring: 35 95% 60%;
     /* #F7B731 */
 
     /* Success, info, warning colors - adjusted for dark mode */
-    --success: 142 71% 50%;
+    --success: 160 84% 45%;
     /* #34D399 - brighter teal */
-    --info: 221 83% 65%;
+    --info: 217 91% 70%;
     /* #60A5FA - brighter blue */
-    --warning: 35 91% 55%;
+    --warning: 35 95% 60%;
     /* #F7B731 - brighter gold */
   }
 }

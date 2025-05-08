@@ -102,10 +102,10 @@ const ChatWidget = ({
           >
             <Button
               onClick={handleToggleWidget}
-              className="h-14 w-14 rounded-full shadow-medium hover:shadow-hard transition-shadow duration-300"
+              className="h-14 w-14 rounded-full shadow-medium hover:shadow-glow transition-all duration-300"
               style={{
                 background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}dd)`,
-                border: "2px solid rgba(255, 255, 255, 0.1)",
+                border: "2px solid rgba(255, 255, 255, 0.2)",
               }}
             >
               <motion.div
@@ -124,7 +124,7 @@ const ChatWidget = ({
             transition={{ duration: 0.3 }}
             className={`flex flex-col ${isMaximized ? "fixed inset-4 sm:inset-10 md:inset-20" : "w-[350px] h-[500px]"}`}
           >
-            <Card className="flex flex-col h-full overflow-hidden shadow-hard border bg-background rounded-xl">
+            <Card className="flex flex-col h-full overflow-hidden shadow-premium border bg-background rounded-xl">
               {/* Chat Header */}
               <div
                 className="flex items-center justify-between p-4 border-b"

@@ -199,7 +199,7 @@ const EmbedCodeGenerator = ({
   };
 
   return (
-    <Card className="w-full max-w-4xl bg-background border shadow-md">
+    <Card className="w-full max-w-4xl bg-background border shadow-premium">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Code className="h-5 w-5" />
@@ -404,11 +404,12 @@ const EmbedCodeGenerator = ({
 
           <TabsContent value="code" className="pt-4">
             <div className="relative">
-              <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm">
+              <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm backdrop-blur-sm">
                 <code className="text-xs sm:text-sm whitespace-pre-wrap break-all">
                   {getCode()}
                 </code>
               </pre>
+              <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-10 pointer-events-none"></div>
               <TooltipProvider>
                 <Tooltip open={copied}>
                   <TooltipTrigger asChild>

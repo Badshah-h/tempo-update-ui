@@ -74,13 +74,17 @@ const ChartWidget: React.FC<ChartWidgetProps> = ({
           onMouseLeave={() => setIsHovering(null)}
         >
           <motion.div
-            className={`w-full rounded-t-md bg-gradient-to-t ${colorClasses}`}
+            className={`w-full rounded-t-md bg-gradient-premium ${colorClasses}`}
             initial={{ height: 0 }}
             animate={{ height: `${(animatedData[index] / maxValue) * 100}%` }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{
               opacity:
                 isHovering === index ? 1 : isHovering !== null ? 0.7 : 0.9,
+              boxShadow:
+                isHovering === index
+                  ? "0 0 10px rgba(var(--primary), 0.3)"
+                  : "none",
             }}
           />
           {showLabels && labels && (

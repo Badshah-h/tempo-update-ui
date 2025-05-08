@@ -66,9 +66,9 @@ const ActivityFeed: React.FC<ActivityFeedProps> = ({
         {displayedActivities.map((activity) => (
           <motion.div
             key={activity.id}
-            className="flex items-start gap-3 p-3 rounded-lg border bg-card/50 hover:bg-card transition-colors"
+            className="flex items-start gap-3 p-3 rounded-lg border bg-card/50 hover:bg-card transition-all duration-200"
             variants={item}
-            whileHover={{ x: 5 }}
+            whileHover={{ x: 5, boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }}
           >
             <Avatar className="h-8 w-8 border border-border">
               <AvatarImage src={activity.user.avatar} />

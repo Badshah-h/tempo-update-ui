@@ -478,6 +478,7 @@ const WidgetConfig = () => {
                     title: "Configuration Saved",
                     description:
                       "Your widget configuration has been saved successfully.",
+                    variant: "default",
                   });
                 }}
               >

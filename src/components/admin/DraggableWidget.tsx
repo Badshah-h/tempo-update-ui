@@ -83,22 +83,22 @@ const DraggableWidget: React.FC<DraggableWidgetProps> = ({
         width: size === "small" ? "100%" : size === "medium" ? "100%" : "100%",
         height: size === "small" ? "auto" : size === "medium" ? "auto" : "auto",
       }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
       drag={isDraggable}
       dragConstraints={false}
-      dragTransition={{ bounceStiffness: 600, bounceDamping: 30 }}
+      dragTransition={{ bounceStiffness: 800, bounceDamping: 35 }}
       dragElastic={0.1}
       dragMomentum={true}
       onDragStart={() => setIsDragging(true)}
       onDragEnd={handleDragEnd}
-      whileDrag={{ scale: 1.02, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}
+      whileDrag={{ scale: 1.02, boxShadow: "0 15px 35px rgba(0,0,0,0.15)" }}
     >
       <Card
         className={cn(
           "h-full transition-all duration-300 overflow-hidden",
           isDragging
-            ? "shadow-2xl ring-2 ring-primary/20"
-            : "shadow-md hover:shadow-lg",
+            ? "shadow-premium ring-2 ring-primary/30"
+            : "shadow-md hover:shadow-card-hover",
           size === "large" ? "col-span-2 row-span-2" : "",
         )}
       >

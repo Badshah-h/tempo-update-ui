@@ -69,7 +69,14 @@ module.exports = {
         medium: "0 4px 20px rgba(0, 0, 0, 0.08)",
         hard: "0 8px 30px rgba(0, 0, 0, 0.12)",
         "inner-soft": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)",
-        highlight: "0 0 0 2px rgba(230, 168, 23, 0.2)",
+        highlight: "0 0 0 2px rgba(245, 166, 35, 0.25)",
+        glow: "0 0 15px rgba(245, 166, 35, 0.5)",
+        "card-hover":
+          "0 10px 30px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05)",
+        premium:
+          "0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+        "premium-dark":
+          "0 10px 25px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1)",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -77,6 +84,11 @@ module.exports = {
           "linear-gradient(to right, var(--tw-gradient-stops))",
         "gradient-card":
           "linear-gradient(to bottom right, var(--tw-gradient-stops))",
+        "gradient-premium": "linear-gradient(135deg, var(--tw-gradient-stops))",
+        "gradient-shimmer":
+          "linear-gradient(to right, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%)",
+        "gradient-mesh":
+          "radial-gradient(at 40% 20%, rgba(255, 255, 255, 0.03) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(245, 166, 35, 0.03) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(245, 166, 35, 0.03) 0px, transparent 50%), radial-gradient(at 80% 50%, rgba(16, 185, 129, 0.03) 0px, transparent 50%), radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.03) 0px, transparent 50%), radial-gradient(at 80% 100%, rgba(245, 166, 35, 0.03) 0px, transparent 50%), radial-gradient(at 0% 0%, rgba(245, 166, 35, 0.03) 0px, transparent 50%)",
       },
       keyframes: {
         "accordion-down": {
@@ -95,12 +107,42 @@ module.exports = {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-5px)" },
         },
+        shimmer: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+        "scale-fade": {
+          "0%": { opacity: 0, transform: "scale(0.95)" },
+          "100%": { opacity: 1, transform: "scale(1)" },
+        },
+        "fade-in": {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+        "fade-up": {
+          "0%": { opacity: 0, transform: "translateY(10px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+        "fade-down": {
+          "0%": { opacity: 0, transform: "translateY(-10px)" },
+          "100%": { opacity: 1, transform: "translateY(0)" },
+        },
+        "spin-slow": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-subtle": "pulse-subtle 3s ease-in-out infinite",
         float: "float 5s ease-in-out infinite",
+        shimmer: "shimmer 2s infinite",
+        "scale-fade": "scale-fade 0.3s ease-out",
+        "fade-in": "fade-in 0.3s ease-out",
+        "fade-up": "fade-up 0.5s ease-out",
+        "fade-down": "fade-down 0.5s ease-out",
+        "spin-slow": "spin-slow 6s linear infinite",
       },
       typography: {
         DEFAULT: {
