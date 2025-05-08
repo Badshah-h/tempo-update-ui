@@ -26,6 +26,8 @@ import {
   ExternalLink,
   Globe,
   Monitor,
+  Check,
+  AlertCircle,
 } from "lucide-react";
 import {
   Tooltip,
@@ -33,31 +35,41 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface EmbedCodeGeneratorProps {
   widgetId?: string;
   defaultTheme?: "light" | "dark" | "system";
   defaultPosition?: "bottom-right" | "bottom-left" | "top-right" | "top-left";
+  apiKey?: string;
 }
 
 const EmbedCodeGenerator = ({
   widgetId = "default-widget-id",
   defaultTheme = "system",
   defaultPosition = "bottom-right",
+  apiKey = "",
 }: EmbedCodeGeneratorProps) => {
-  const [embedType, setEmbedType] = useState<"iframe" | "web-component">(
-    "iframe",
-  );
+  const [embedType, setEmbedType] = useState<
+    "iframe" | "web-component" | "script"
+  >("iframe");
   const [theme, setTheme] = useState<string>(defaultTheme);
   const [position, setPosition] = useState<string>(defaultPosition);
   const [autoOpen, setAutoOpen] = useState<boolean>(false);
   const [hideOnMobile, setHideOnMobile] = useState<boolean>(false);
+  const [customDomain, setCustomDomain] = useState<string>("");
   const [copied, setCopied] = useState<boolean>(false);
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
+  const [customWidth, setCustomWidth] = useState<string>("350");
+  const [customHeight, setCustomHeight] = useState<string>("500");
+
+  // Base URL for the embed
+  const baseUrl = customDomain || "https://chat.example.com";
 
   const generateIframeCode = () => {
     return `<!-- AI Chat Widget (iframe) -->
 <iframe 
-  src="https://chat.example.com/embed/${widgetId}?theme=${theme}&position=${position}${autoOpen ? "&autoOpen=true" : ""}${hideOnMobile ? "&hideOnMobile=true" : ""}" 
+  src="${baseUrl}/embed/${widgetId}?theme=${theme}&position=${position}${autoOpen ? "&autoOpen=true" : ""}${hideOnMobile ? "&hideOnMobile=true" : ""}" 
   style="position: fixed; ${position.includes("bottom") ? "bottom: 20px;" : "top: 20px;"} ${position.includes("right") ? "right: 20px;" : "left: 20px;"} border: none; width: 60px; height: 60px; z-index: 999; overflow: hidden;" 
   id="ai-chat-widget"
   allow="microphone; camera"
@@ -67,20 +79,55 @@ const EmbedCodeGenerator = ({
 
   const generateWebComponentCode = () => {
     return `<!-- AI Chat Widget (Web Component) -->
-<script type="module" src="https://chat.example.com/embed/widget.js"></script>
+<script type="module" src="${baseUrl}/embed/widget.js"></script>
 <ai-chat-widget 
   widget-id="${widgetId}" 
   theme="${theme}" 
   position="${position}"
   ${autoOpen ? "auto-open" : ""}
-  ${hideOnMobile ? "hide-on-mobile" : ""}>
+  ${hideOnMobile ? "hide-on-mobile" : ""}
+  ${showAdvanced ? `width="${customWidth}" height="${customHeight}"` : ""}
+  api-key="${apiKey}">
 </ai-chat-widget>`;
   };
 
+  const generateScriptCode = () => {
+    return `<!-- AI Chat Widget (Script) -->
+<script>
+  (function(w,d,s,o,f,js,fjs){
+    w['AI-Chat-Widget']=o;w[o]=w[o]||function(){(w[o].q=w[o].q||[]).push(arguments)};
+    js=d.createElement(s),fjs=d.getElementsByTagName(s)[0];
+    js.id=o;js.src=f;js.async=1;fjs.parentNode.insertBefore(js,fjs);
+  }(window,document,'script','aiChat','${baseUrl}/embed/widget-loader.js'));
+  
+  aiChat('init', {
+    widgetId: '${widgetId}',
+    theme: '${theme}',
+    position: '${position}',
+    autoOpen: ${autoOpen},
+    hideOnMobile: ${hideOnMobile},
+    ${
+      showAdvanced
+        ? `width: ${customWidth},
+    height: ${customHeight},`
+        : ""
+    }
+    apiKey: '${apiKey}'
+  });
+</script>`;
+  };
+
   const getCode = () => {
-    return embedType === "iframe"
-      ? generateIframeCode()
-      : generateWebComponentCode();
+    switch (embedType) {
+      case "iframe":
+        return generateIframeCode();
+      case "web-component":
+        return generateWebComponentCode();
+      case "script":
+        return generateScriptCode();
+      default:
+        return generateIframeCode();
+    }
   };
 
   const copyToClipboard = () => {
@@ -89,7 +136,7 @@ const EmbedCodeGenerator = ({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const previewUrl = `https://chat.example.com/preview/${widgetId}?theme=${theme}&position=${position}${autoOpen ? "&autoOpen=true" : ""}${hideOnMobile ? "&hideOnMobile=true" : ""}`;
+  const previewUrl = `${baseUrl}/preview/${widgetId}?theme=${theme}&position=${position}${autoOpen ? "&autoOpen=true" : ""}${hideOnMobile ? "&hideOnMobile=true" : ""}${showAdvanced ? `&width=${customWidth}&height=${customHeight}` : ""}`;
 
   return (
     <Card className="w-full max-w-4xl bg-background border shadow-md">
@@ -117,7 +164,7 @@ const EmbedCodeGenerator = ({
                 <Select
                   value={embedType}
                   onValueChange={(value) =>
-                    setEmbedType(value as "iframe" | "web-component")
+                    setEmbedType(value as "iframe" | "web-component" | "script")
                   }
                 >
                   <SelectTrigger id="embed-type" className="w-full">
@@ -128,12 +175,17 @@ const EmbedCodeGenerator = ({
                     <SelectItem value="web-component">
                       Web Component (Shadow DOM)
                     </SelectItem>
+                    <SelectItem value="script">
+                      JavaScript Snippet (Lightweight)
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground mt-1">
                   {embedType === "iframe"
                     ? "iFrame provides complete isolation from your website styles."
-                    : "Web Component uses Shadow DOM for style encapsulation with better integration."}
+                    : embedType === "web-component"
+                      ? "Web Component uses Shadow DOM for style encapsulation with better integration."
+                      : "JavaScript snippet is the lightest option with minimal impact on page load."}
                 </p>
               </div>
 
@@ -193,6 +245,84 @@ const EmbedCodeGenerator = ({
                   onCheckedChange={setHideOnMobile}
                 />
               </div>
+
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="advanced-options">Advanced Options</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Configure additional widget settings
+                  </p>
+                </div>
+                <Switch
+                  id="advanced-options"
+                  checked={showAdvanced}
+                  onCheckedChange={setShowAdvanced}
+                />
+              </div>
+
+              {showAdvanced && (
+                <div className="space-y-4 pt-2 border-t">
+                  <div>
+                    <Label htmlFor="custom-domain">
+                      Custom Domain (Optional)
+                    </Label>
+                    <Input
+                      id="custom-domain"
+                      placeholder="https://chat.yourdomain.com"
+                      value={customDomain}
+                      onChange={(e) => setCustomDomain(e.target.value)}
+                      className="w-full"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      If you have a custom domain for the chat widget, enter it
+                      here
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="custom-width">Widget Width (px)</Label>
+                      <Input
+                        id="custom-width"
+                        type="number"
+                        value={customWidth}
+                        onChange={(e) => setCustomWidth(e.target.value)}
+                        className="w-full"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="custom-height">Widget Height (px)</Label>
+                      <Input
+                        id="custom-height"
+                        type="number"
+                        value={customHeight}
+                        onChange={(e) => setCustomHeight(e.target.value)}
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+
+                  {apiKey ? (
+                    <Alert className="bg-green-500/10 text-green-500 border-green-500/20">
+                      <Check className="h-4 w-4" />
+                      <AlertTitle>API Key Configured</AlertTitle>
+                      <AlertDescription>
+                        Your API key is set and will be included in the embed
+                        code.
+                      </AlertDescription>
+                    </Alert>
+                  ) : (
+                    <Alert className="bg-amber-500/10 text-amber-500 border-amber-500/20">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertTitle>API Key Required</AlertTitle>
+                      <AlertDescription>
+                        Configure an API key in your admin settings to enable
+                        the widget.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                </div>
+              )}
             </div>
           </TabsContent>
 
@@ -230,6 +360,15 @@ const EmbedCodeGenerator = ({
                 Add this code to your website's HTML where you want the chat
                 widget to appear.
               </p>
+              {embedType === "script" && (
+                <p className="mt-2">
+                  For best performance, place the script just before the closing
+                  <code className="bg-muted px-1 rounded">
+                    {"</body>"}
+                  </code>{" "}
+                  tag.
+                </p>
+              )}
             </div>
           </TabsContent>
 
@@ -258,7 +397,12 @@ const EmbedCodeGenerator = ({
       </CardContent>
       <CardFooter className="flex justify-between border-t pt-4">
         <p className="text-xs text-muted-foreground">Widget ID: {widgetId}</p>
-        <Button onClick={copyToClipboard}>
+        <Button onClick={copyToClipboard} className="gap-2">
+          {copied ? (
+            <Check className="h-4 w-4" />
+          ) : (
+            <Copy className="h-4 w-4" />
+          )}
           {copied ? "Copied!" : "Copy Embed Code"}
         </Button>
       </CardFooter>
