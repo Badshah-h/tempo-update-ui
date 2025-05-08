@@ -112,14 +112,15 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 w-full">
+      {/* Top bar: Tabs on the left, buttons on the right */}
+      <div className="flex flex-row items-center justify-between w-full gap-4">
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
-          className="w-[400px]"
+          className="w-full"
         >
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid max-w-md grid-cols-2">
             <TabsTrigger value="grid" className="flex items-center gap-2">
               <Layout className="h-4 w-4" />
               <span>Grid Layout</span>
@@ -135,14 +136,13 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
             </TabsTrigger>
           </TabsList>
         </Tabs>
-
-        <div className="flex items-center gap-2">
+        <div className="flex flex-row items-center gap-2 md:ml-6">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
                 size="sm"
-                className="gap-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5"
+                className="gap-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5 min-w-[110px]"
               >
                 <Plus className="h-4 w-4" />
                 Add Widget
@@ -164,7 +164,7 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
           <Button
             variant="outline"
             size="sm"
-            className="gap-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5"
+            className="gap-2 border-primary/20 hover:border-primary/40 hover:bg-primary/5 min-w-[80px]"
             onClick={resetLayout}
           >
             <RotateCcw className="h-4 w-4" />
@@ -174,7 +174,7 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
           <Button
             variant="default"
             size="sm"
-            className="gap-2"
+            className="gap-2 min-w-[110px]"
             onClick={saveLayout}
           >
             <Save className="h-4 w-4" />
@@ -185,57 +185,61 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
 
       <Separator />
 
-      <TabsContent value="grid" className="mt-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {widgets.map((widget) => (
-            <DraggableWidget
-              key={widget.id}
-              id={widget.id}
-              title={widget.title}
-              initialSize={widget.size}
-              onRemove={() => handleRemoveWidget(widget.id)}
-              onSizeChange={handleSizeChange}
-              className={`${widget.size === "large" ? "col-span-2 row-span-2" : ""}`}
-              isDraggable={false}
-            >
-              {renderWidget(widget.type, widget.id)}
-            </DraggableWidget>
-          ))}
-        </div>
-      </TabsContent>
-
-      <TabsContent value="free" className="mt-4">
-        <div className="relative h-[800px] bg-muted/20 rounded-lg border border-dashed border-muted p-4 overflow-hidden">
-          {widgets.map((widget) => (
-            <motion.div
-              key={widget.id}
-              initial={{ x: widget.position.x, y: widget.position.y }}
-              className="absolute"
-              style={{
-                width:
-                  widget.size === "small"
-                    ? "300px"
-                    : widget.size === "medium"
-                      ? "400px"
-                      : "500px",
-              }}
-            >
+      {/* Tab content below the top bar */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsContent value="grid" className="mt-4 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+            {widgets.map((widget) => (
               <DraggableWidget
+                key={widget.id}
                 id={widget.id}
                 title={widget.title}
-                initialSize={widget.size}
-                initialPosition={widget.position}
+                size={widget.size}
+                position={widget.position}
                 onRemove={() => handleRemoveWidget(widget.id)}
-                onPositionChange={handlePositionChange}
                 onSizeChange={handleSizeChange}
-                isDraggable={true}
+                className={`${widget.size === "large" ? "col-span-2 row-span-2" : ""}`}
+                isDraggable={false}
               >
                 {renderWidget(widget.type, widget.id)}
               </DraggableWidget>
-            </motion.div>
-          ))}
-        </div>
-      </TabsContent>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="free" className="mt-4 w-full">
+          <div className="relative h-[800px] bg-muted/20 rounded-lg border border-dashed border-muted p-4 overflow-hidden w-full">
+            {widgets.map((widget) => (
+              <motion.div
+                key={widget.id}
+                initial={{ x: widget.position.x, y: widget.position.y }}
+                className="absolute"
+                style={{
+                  width:
+                    widget.size === "small"
+                      ? "300px"
+                      : widget.size === "medium"
+                        ? "400px"
+                        : "500px",
+                }}
+              >
+                <DraggableWidget
+                  id={widget.id}
+                  title={widget.title}
+                  size={widget.size}
+                  position={widget.position}
+                  onRemove={() => handleRemoveWidget(widget.id)}
+                  onPositionChange={handlePositionChange}
+                  onSizeChange={handleSizeChange}
+                  isDraggable={true}
+                >
+                  {renderWidget(widget.type, widget.id)}
+                </DraggableWidget>
+              </motion.div>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
