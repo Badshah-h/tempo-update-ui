@@ -1,0 +1,12 @@
+import Dashboard from "@/components/admin/Dashboard";
+import AdminLayout from "@/components/admin/AdminLayout";
+
+export default function AdminDashboardStoryboard() {
+  return (
+    <div className="bg-background min-h-screen">
+      <AdminLayout>
+        <Dashboard />
+      </AdminLayout>
+    </div>
+  );
+}

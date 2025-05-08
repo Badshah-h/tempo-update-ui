@@ -91,12 +91,14 @@ const WidgetConfig = () => {
       title="Widget Configuration"
       description="Customize how your AI chat widget looks and behaves."
     >
-
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <Tabs defaultValue="appearance" className="w-full">
             <TabsList className="w-full max-w-md grid grid-cols-3">
-              <TabsTrigger value="appearance" className="flex items-center gap-2">
+              <TabsTrigger
+                value="appearance"
+                className="flex items-center gap-2"
+              >
                 <Palette className="h-4 w-4" />
                 <span>Appearance</span>
               </TabsTrigger>
@@ -146,7 +148,9 @@ const WidgetConfig = () => {
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="secondaryColor">Secondary Color</Label>
+                          <Label htmlFor="secondaryColor">
+                            Secondary Color
+                          </Label>
                           <div className="flex gap-2">
                             <div
                               className="h-10 w-10 rounded-md border"
@@ -364,15 +368,15 @@ const WidgetConfig = () => {
                     <Label htmlFor="position">Widget Position</Label>
                     <Select
                       value={config.position}
-                      onValueChange={(value) =>
-                        handleChange("position", value)
-                      }
+                      onValueChange={(value) => handleChange("position", value)}
                     >
                       <SelectTrigger id="position">
                         <SelectValue placeholder="Select position" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="bottom-right">Bottom Right</SelectItem>
+                        <SelectItem value="bottom-right">
+                          Bottom Right
+                        </SelectItem>
                         <SelectItem value="bottom-left">Bottom Left</SelectItem>
                         <SelectItem value="top-right">Top Right</SelectItem>
                         <SelectItem value="top-left">Top Left</SelectItem>
@@ -400,7 +404,9 @@ const WidgetConfig = () => {
 
                   <div className="space-y-4">
                     <div>
-                      <h4 className="text-sm font-medium mb-1">Advanced Options</h4>
+                      <h4 className="text-sm font-medium mb-1">
+                        Advanced Options
+                      </h4>
                       <p className="text-sm text-muted-foreground">
                         Additional configuration options for the chat widget
                       </p>
@@ -413,7 +419,9 @@ const WidgetConfig = () => {
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <Label htmlFor="persistHistory">Persist Chat History</Label>
+                        <Label htmlFor="persistHistory">
+                          Persist Chat History
+                        </Label>
                         <Switch id="persistHistory" defaultChecked />
                       </div>
 
@@ -462,7 +470,17 @@ const WidgetConfig = () => {
               </div>
             </CardContent>
             <CardFooter className="flex justify-end">
-              <Button className="gap-2">
+              <Button
+                className="gap-2"
+                onClick={() => {
+                  // Save configuration logic would go here
+                  toast({
+                    title: "Configuration Saved",
+                    description:
+                      "Your widget configuration has been saved successfully.",
+                  });
+                }}
+              >
                 <Save className="h-4 w-4" />
                 Save Configuration
               </Button>

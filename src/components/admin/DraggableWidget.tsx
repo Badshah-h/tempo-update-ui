@@ -72,6 +72,7 @@ const DraggableWidget: React.FC<DraggableWidgetProps> = ({
       style={{
         gridArea,
         zIndex: isDragging ? 50 : 1,
+        position: isDraggable ? "absolute" : "relative",
         x: position.x,
         y: position.y,
       }}
@@ -84,10 +85,10 @@ const DraggableWidget: React.FC<DraggableWidgetProps> = ({
       }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
       drag={isDraggable}
-      dragConstraints={false} // Remove constraints for smoother dragging
-      dragTransition={{ power: 0.2, timeConstant: 200 }} // Optimize drag physics
-      dragElastic={0} // Remove elasticity for more direct control
-      dragMomentum={false} // Disable momentum for precise positioning
+      dragConstraints={false}
+      dragTransition={{ bounceStiffness: 600, bounceDamping: 30 }}
+      dragElastic={0.1}
+      dragMomentum={true}
       onDragStart={() => setIsDragging(true)}
       onDragEnd={handleDragEnd}
       whileDrag={{ scale: 1.02, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}

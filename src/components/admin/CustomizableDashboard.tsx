@@ -75,11 +75,18 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
     id: string,
     position: { x: number; y: number },
   ) => {
+    // Immediately update the widget position in state
     setWidgets(
       widgets.map((widget) =>
         widget.id === id ? { ...widget, position } : widget,
       ),
     );
+
+    // Optionally save to localStorage for persistence
+    const updatedWidgets = widgets.map((widget) =>
+      widget.id === id ? { ...widget, position } : widget,
+    );
+    localStorage.setItem("dashboardLayout", JSON.stringify(updatedWidgets));
   };
 
   const handleSizeChange = (id: string, size: "small" | "medium" | "large") => {
@@ -115,11 +122,7 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
     <div className="space-y-4 w-full">
       {/* Top bar: Tabs on the left, buttons on the right */}
       <div className="flex flex-row items-center justify-between w-full gap-4">
-        <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="w-full"
-        >
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid max-w-md grid-cols-2">
             <TabsTrigger value="grid" className="flex items-center gap-2">
               <Layout className="h-4 w-4" />
@@ -213,6 +216,7 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
               <motion.div
                 key={widget.id}
                 initial={{ x: widget.position.x, y: widget.position.y }}
+                animate={{ x: widget.position.x, y: widget.position.y }}
                 className="absolute"
                 style={{
                   width:

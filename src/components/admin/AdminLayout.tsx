@@ -160,6 +160,7 @@ const AdminLayout = () => {
           backgroundImage: `radial-gradient(circle at 25px 25px, rgba(var(--primary), 0.04) 2%, transparent 0%),
                            radial-gradient(circle at 75px 75px, rgba(var(--primary), 0.04) 2%, transparent 0%)`,
           backgroundSize: "100px 100px",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
         }}
       >
         <div className="flex h-16 items-center justify-between px-4 py-4">
@@ -321,7 +322,13 @@ const AdminLayout = () => {
 
             {/* Notification Bell */}
             <Button variant="ghost" size="icon" className="relative">
-              <svg className="h-5 w-5 text-primary" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <svg
+                className="h-5 w-5 text-primary"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
                 <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
               </svg>
               {/* Notification dot */}
@@ -342,19 +349,28 @@ const AdminLayout = () => {
             {/* User Profile Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-2 px-2 hover:bg-primary/5">
+                <Button
+                  variant="ghost"
+                  className="flex items-center gap-2 px-2 hover:bg-primary/5"
+                >
                   <Avatar className="h-8 w-8 border-2 border-primary/20 ring-2 ring-background">
                     <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin" />
-                    <AvatarFallback className="bg-primary/10 text-primary">AD</AvatarFallback>
+                    <AvatarFallback className="bg-primary/10 text-primary">
+                      AD
+                    </AvatarFallback>
                   </Avatar>
-                  <span className="hidden md:block font-medium">Admin User</span>
+                  <span className="hidden md:block font-medium">
+                    Admin User
+                  </span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium">Admin User</p>
-                    <p className="text-xs text-muted-foreground">admin@example.com</p>
+                    <p className="text-xs text-muted-foreground">
+                      admin@example.com
+                    </p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />

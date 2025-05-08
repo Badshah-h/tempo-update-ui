@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -28,6 +28,8 @@ import {
   Monitor,
   Check,
   AlertCircle,
+  Save,
+  RefreshCw,
 } from "lucide-react";
 import {
   Tooltip,
@@ -36,6 +38,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useToast } from "@/components/ui/use-toast";
 
 interface EmbedCodeGeneratorProps {
   widgetId?: string;
@@ -50,6 +53,7 @@ const EmbedCodeGenerator = ({
   defaultPosition = "bottom-right",
   apiKey = "",
 }: EmbedCodeGeneratorProps) => {
+  const { toast } = useToast();
   const [embedType, setEmbedType] = useState<
     "iframe" | "web-component" | "script"
   >("iframe");
@@ -62,6 +66,50 @@ const EmbedCodeGenerator = ({
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
   const [customWidth, setCustomWidth] = useState<string>("350");
   const [customHeight, setCustomHeight] = useState<string>("500");
+  const [activeTab, setActiveTab] = useState<string>("options");
+  const [previewLoading, setPreviewLoading] = useState<boolean>(false);
+
+  // Load saved configuration from localStorage if available
+  useEffect(() => {
+    const savedConfig = localStorage.getItem(`embed-config-${widgetId}`);
+    if (savedConfig) {
+      try {
+        const config = JSON.parse(savedConfig);
+        setEmbedType(config.embedType || "iframe");
+        setTheme(config.theme || defaultTheme);
+        setPosition(config.position || defaultPosition);
+        setAutoOpen(config.autoOpen || false);
+        setHideOnMobile(config.hideOnMobile || false);
+        setCustomDomain(config.customDomain || "");
+        setShowAdvanced(config.showAdvanced || false);
+        setCustomWidth(config.customWidth || "350");
+        setCustomHeight(config.customHeight || "500");
+      } catch (e) {
+        console.error("Error loading saved configuration", e);
+      }
+    }
+  }, [widgetId, defaultTheme, defaultPosition]);
+
+  // Save configuration to localStorage
+  const saveConfiguration = () => {
+    const config = {
+      embedType,
+      theme,
+      position,
+      autoOpen,
+      hideOnMobile,
+      customDomain,
+      showAdvanced,
+      customWidth,
+      customHeight,
+    };
+    localStorage.setItem(`embed-config-${widgetId}`, JSON.stringify(config));
+    toast({
+      title: "Configuration Saved",
+      description: "Your embed settings have been saved for future use.",
+      variant: "default",
+    });
+  };
 
   // Base URL for the embed
   const baseUrl = customDomain || "https://chat.example.com";
@@ -69,7 +117,7 @@ const EmbedCodeGenerator = ({
   const generateIframeCode = () => {
     return `<!-- AI Chat Widget (iframe) -->
 <iframe 
-  src="${baseUrl}/embed/${widgetId}?theme=${theme}&position=${position}${autoOpen ? "&autoOpen=true" : ""}${hideOnMobile ? "&hideOnMobile=true" : ""}" 
+  src="${baseUrl}/embed/${widgetId}?theme=${theme}&position=${position}${autoOpen ? "&autoOpen=true" : ""}${hideOnMobile ? "&hideOnMobile=true" : ""}${showAdvanced ? `&width=${customWidth}&height=${customHeight}` : ""}" 
   style="position: fixed; ${position.includes("bottom") ? "bottom: 20px;" : "top: 20px;"} ${position.includes("right") ? "right: 20px;" : "left: 20px;"} border: none; width: 60px; height: 60px; z-index: 999; overflow: hidden;" 
   id="ai-chat-widget"
   allow="microphone; camera"
@@ -134,9 +182,21 @@ const EmbedCodeGenerator = ({
     navigator.clipboard.writeText(getCode());
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+
+    toast({
+      title: "Code Copied",
+      description: "Embed code has been copied to clipboard.",
+      variant: "default",
+    });
   };
 
   const previewUrl = `${baseUrl}/preview/${widgetId}?theme=${theme}&position=${position}${autoOpen ? "&autoOpen=true" : ""}${hideOnMobile ? "&hideOnMobile=true" : ""}${showAdvanced ? `&width=${customWidth}&height=${customHeight}` : ""}`;
+
+  const handlePreviewRefresh = () => {
+    setPreviewLoading(true);
+    // Simulate loading for better UX
+    setTimeout(() => setPreviewLoading(false), 800);
+  };
 
   return (
     <Card className="w-full max-w-4xl bg-background border shadow-md">
@@ -150,7 +210,12 @@ const EmbedCodeGenerator = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="options" className="w-full">
+        <Tabs
+          defaultValue="options"
+          className="w-full"
+          value={activeTab}
+          onValueChange={setActiveTab}
+        >
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="options">Options</TabsTrigger>
             <TabsTrigger value="code">Code</TabsTrigger>
@@ -323,6 +388,17 @@ const EmbedCodeGenerator = ({
                   )}
                 </div>
               )}
+
+              <div className="pt-4 flex justify-end">
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  onClick={saveConfiguration}
+                >
+                  <Save className="h-4 w-4" />
+                  Save Configuration
+                </Button>
+              </div>
             </div>
           </TabsContent>
 
@@ -343,7 +419,7 @@ const EmbedCodeGenerator = ({
                       onClick={copyToClipboard}
                     >
                       {copied ? (
-                        <Clipboard className="h-4 w-4" />
+                        <Check className="h-4 w-4" />
                       ) : (
                         <Copy className="h-4 w-4" />
                       )}
@@ -375,21 +451,73 @@ const EmbedCodeGenerator = ({
           <TabsContent value="preview" className="pt-4">
             <div className="border rounded-md p-4 flex flex-col items-center justify-center min-h-[300px] bg-muted/50">
               <div className="flex flex-col items-center gap-4">
-                <Monitor className="h-16 w-16 text-muted-foreground" />
-                <p className="text-center text-muted-foreground">
-                  Preview how your widget will look with current settings
-                </p>
-                <Button variant="outline" className="gap-2" asChild>
-                  <a
-                    href={previewUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Globe className="h-4 w-4" />
-                    Open Preview
-                    <ExternalLink className="h-3 w-3 ml-1" />
-                  </a>
-                </Button>
+                {previewLoading ? (
+                  <div className="flex flex-col items-center gap-4">
+                    <RefreshCw className="h-16 w-16 text-muted-foreground animate-spin" />
+                    <p className="text-center text-muted-foreground">
+                      Loading preview...
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <Monitor className="h-16 w-16 text-muted-foreground" />
+                    <p className="text-center text-muted-foreground">
+                      Preview how your widget will look with current settings
+                    </p>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        className="gap-2"
+                        onClick={handlePreviewRefresh}
+                      >
+                        <RefreshCw className="h-4 w-4" />
+                        Refresh Preview
+                      </Button>
+                      <Button variant="outline" className="gap-2" asChild>
+                        <a
+                          href={previewUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Globe className="h-4 w-4" />
+                          Open Preview
+                          <ExternalLink className="h-3 w-3 ml-1" />
+                        </a>
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-4 p-4 border rounded-md bg-muted/20">
+              <h3 className="text-sm font-medium mb-2">Preview Information</h3>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div>
+                  <span className="font-medium">Embed Type:</span> {embedType}
+                </div>
+                <div>
+                  <span className="font-medium">Theme:</span> {theme}
+                </div>
+                <div>
+                  <span className="font-medium">Position:</span> {position}
+                </div>
+                <div>
+                  <span className="font-medium">Auto Open:</span>{" "}
+                  {autoOpen ? "Yes" : "No"}
+                </div>
+                {showAdvanced && (
+                  <>
+                    <div>
+                      <span className="font-medium">Width:</span> {customWidth}
+                      px
+                    </div>
+                    <div>
+                      <span className="font-medium">Height:</span>{" "}
+                      {customHeight}px
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </TabsContent>
@@ -397,14 +525,23 @@ const EmbedCodeGenerator = ({
       </CardContent>
       <CardFooter className="flex justify-between border-t pt-4">
         <p className="text-xs text-muted-foreground">Widget ID: {widgetId}</p>
-        <Button onClick={copyToClipboard} className="gap-2">
-          {copied ? (
-            <Check className="h-4 w-4" />
-          ) : (
-            <Copy className="h-4 w-4" />
-          )}
-          {copied ? "Copied!" : "Copy Embed Code"}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={() => setActiveTab("options")}
+            className="hidden sm:flex"
+          >
+            Edit Options
+          </Button>
+          <Button onClick={copyToClipboard} className="gap-2">
+            {copied ? (
+              <Check className="h-4 w-4" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
+            {copied ? "Copied!" : "Copy Embed Code"}
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

@@ -6,6 +6,10 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "!./src/tempobook/storyboards/**/*.{ts,tsx}",
+  ],
+  safelist: [
+    // Add any classes that might be dynamically generated and need to be included
   ],
   prefix: "",
   theme: {

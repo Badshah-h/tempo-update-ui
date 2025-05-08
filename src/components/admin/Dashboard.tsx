@@ -37,8 +37,14 @@ import ThemeSwitcher from "./ThemeSwitcher";
 const Dashboard = () => {
   const [showCustomize, setShowCustomize] = useState(false);
   const [activeView, setActiveView] = useState<"standard" | "custom">(
-    "standard",
+    (localStorage.getItem("dashboardView") as "standard" | "custom") ||
+      "standard",
   );
+
+  // Save the active view preference to localStorage
+  useEffect(() => {
+    localStorage.setItem("dashboardView", activeView);
+  }, [activeView]);
 
   // Animation variants for staggered animations
   const containerVariants = {
@@ -317,12 +323,13 @@ const Dashboard = () => {
                 className="flex items-start gap-3 p-2 rounded-md hover:bg-muted/50 transition-colors border-b last:border-0 pb-3 last:pb-0"
               >
                 <AlertCircle
-                  className={`h-5 w-5 mt-0.5 ${item.status === "unresolved"
-                    ? "text-rose-500"
-                    : item.status === "investigating"
-                      ? "text-amber-500"
-                      : "text-emerald-500"
-                    }`}
+                  className={`h-5 w-5 mt-0.5 ${
+                    item.status === "unresolved"
+                      ? "text-rose-500"
+                      : item.status === "investigating"
+                        ? "text-amber-500"
+                        : "text-emerald-500"
+                  }`}
                 />
                 <div>
                   <div className="font-medium">{item.query}</div>
@@ -649,7 +656,10 @@ const Dashboard = () => {
                     <CardDescription>Latest updates and issues</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <ActivityFeed activities={recentActivities} title="Recent Activity" />
+                    <ActivityFeed
+                      activities={recentActivities}
+                      title="Recent Activity"
+                    />
                   </CardContent>
                 </Card>
               </TabsContent>
