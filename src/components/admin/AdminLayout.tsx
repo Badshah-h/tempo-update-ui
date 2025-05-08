@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 interface NavItemProps {
   icon: React.ReactNode;
@@ -177,27 +178,30 @@ const AdminLayout = () => {
               </motion.span>
             )}
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="hidden lg:flex"
-            onClick={() => setIsCollapsed(!isCollapsed)}
-          >
-            <ChevronRight
-              className={cn(
-                "h-4 w-4 transition-transform",
-                isCollapsed ? "rotate-0" : "rotate-180",
-              )}
-            />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="lg:hidden"
-            onClick={() => setIsMobileOpen(false)}
-          >
-            <X className="h-5 w-5" />
-          </Button>
+          <div className="flex items-center gap-2">
+            {!isCollapsed && <ThemeSwitcher />}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hidden lg:flex"
+              onClick={() => setIsCollapsed(!isCollapsed)}
+            >
+              <ChevronRight
+                className={cn(
+                  "h-4 w-4 transition-transform",
+                  isCollapsed ? "rotate-0" : "rotate-180",
+                )}
+              />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={() => setIsMobileOpen(false)}
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
 
         <div className="flex-1 overflow-auto py-2 px-3">
@@ -219,19 +223,21 @@ const AdminLayout = () => {
         <div className="mt-auto p-4">
           <Separator className="mb-4" />
           <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleTheme}
-              className="rounded-full hover:bg-primary/5"
-            >
-              {theme === "light" ? (
-                <Moon className="h-5 w-5 text-primary" />
-              ) : (
-                <Sun className="h-5 w-5 text-primary" />
-              )}
-              <span className="sr-only">Toggle theme</span>
-            </Button>
+            {isCollapsed && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                className="rounded-full hover:bg-primary/5"
+              >
+                {theme === "light" ? (
+                  <Moon className="h-5 w-5 text-primary" />
+                ) : (
+                  <Sun className="h-5 w-5 text-primary" />
+                )}
+                <span className="sr-only">Toggle theme</span>
+              </Button>
+            )}
 
             {!isCollapsed && (
               <DropdownMenu>
@@ -305,6 +311,7 @@ const AdminLayout = () => {
             <Menu className="h-6 w-6" />
           </Button>
           <div className="ml-auto flex items-center gap-4">
+            {isCollapsed && <ThemeSwitcher />}
             <Button
               variant="outline"
               size="sm"
