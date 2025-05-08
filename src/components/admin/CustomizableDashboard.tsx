@@ -137,6 +137,7 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
           </TabsList>
         </Tabs>
         <div className="flex flex-row items-center gap-2 md:ml-6">
+          {/* Place Hide Effects button here if needed */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -194,8 +195,7 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
                 key={widget.id}
                 id={widget.id}
                 title={widget.title}
-                size={widget.size}
-                position={widget.position}
+                initialSize={widget.size}
                 onRemove={() => handleRemoveWidget(widget.id)}
                 onSizeChange={handleSizeChange}
                 className={`${widget.size === "large" ? "col-span-2 row-span-2" : ""}`}
@@ -226,8 +226,8 @@ const CustomizableDashboard: React.FC<CustomizableDashboardProps> = ({
                 <DraggableWidget
                   id={widget.id}
                   title={widget.title}
-                  size={widget.size}
-                  position={widget.position}
+                  initialSize={widget.size}
+                  initialPosition={widget.position}
                   onRemove={() => handleRemoveWidget(widget.id)}
                   onPositionChange={handlePositionChange}
                   onSizeChange={handleSizeChange}

@@ -301,7 +301,8 @@ const AdminLayout = () => {
         )}
       >
         {/* Top navbar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-6">
+        <header className="sticky top-0 z-30 flex h-16 items-center border-b bg-background/80 backdrop-blur-sm px-6">
+          {/* Sidebar toggle for mobile */}
           <Button
             variant="ghost"
             size="icon"
@@ -310,8 +311,24 @@ const AdminLayout = () => {
           >
             <Menu className="h-6 w-6" />
           </Button>
-          <div className="ml-auto flex items-center gap-4">
-            {isCollapsed && <ThemeSwitcher />}
+
+          {/* Optional: Page title or breadcrumbs here */}
+          {/* <div className="ml-4 font-semibold text-lg">Dashboard</div> */}
+
+          <div className="ml-auto flex items-center gap-3">
+            {/* Theme Switcher */}
+            <ThemeSwitcher />
+
+            {/* Notification Bell */}
+            <Button variant="ghost" size="icon" className="relative">
+              <svg className="h-5 w-5 text-primary" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+              {/* Notification dot */}
+              <span className="absolute top-1 right-1 block h-2 w-2 rounded-full bg-rose-500"></span>
+            </Button>
+
+            {/* View Website */}
             <Button
               variant="outline"
               size="sm"
@@ -321,51 +338,44 @@ const AdminLayout = () => {
               <MessageSquare className="h-4 w-4" />
               View Website
             </Button>
-            {isCollapsed && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="hover:bg-primary/5"
-                  >
-                    <Avatar className="h-8 w-8 border-2 border-primary/20 ring-2 ring-background">
-                      <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin" />
-                      <AvatarFallback className="bg-primary/10 text-primary">
-                        AD
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium">Admin User</p>
-                      <p className="text-xs text-muted-foreground">
-                        admin@example.com
-                      </p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="cursor-pointer hover:bg-primary/5 focus:bg-primary/5">
-                    <User className="mr-2 h-4 w-4 text-primary" />
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer hover:bg-primary/5 focus:bg-primary/5">
-                    <Settings className="mr-2 h-4 w-4 text-primary" />
-                    Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => navigate("/")}
-                    className="cursor-pointer text-destructive hover:bg-destructive/5 focus:bg-destructive/5"
-                  >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Log out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
+
+            {/* User Profile Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center gap-2 px-2 hover:bg-primary/5">
+                  <Avatar className="h-8 w-8 border-2 border-primary/20 ring-2 ring-background">
+                    <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=admin" />
+                    <AvatarFallback className="bg-primary/10 text-primary">AD</AvatarFallback>
+                  </Avatar>
+                  <span className="hidden md:block font-medium">Admin User</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium">Admin User</p>
+                    <p className="text-xs text-muted-foreground">admin@example.com</p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="cursor-pointer hover:bg-primary/5 focus:bg-primary/5">
+                  <User className="mr-2 h-4 w-4 text-primary" />
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer hover:bg-primary/5 focus:bg-primary/5">
+                  <Settings className="mr-2 h-4 w-4 text-primary" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => navigate("/")}
+                  className="cursor-pointer text-destructive hover:bg-destructive/5 focus:bg-destructive/5"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
 
