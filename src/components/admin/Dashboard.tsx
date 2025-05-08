@@ -17,6 +17,7 @@ import {
   TrendingUp,
   AlertCircle,
 } from "lucide-react";
+import AdminPageContainer from "./AdminPageContainer";
 
 const Dashboard = () => {
   // Animation variants for staggered animations
@@ -44,13 +45,10 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="container py-6 space-y-8 max-w-7xl">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Overview of your AI chat system performance and metrics.
-        </p>
-      </div>
+    <AdminPageContainer
+      title="Dashboard"
+      description="Overview of your AI chat system performance and metrics."
+    >
 
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="w-full max-w-md">
@@ -302,13 +300,12 @@ const Dashboard = () => {
                   >
                     <div className="flex items-start gap-3">
                       <AlertCircle
-                        className={`h-5 w-5 mt-0.5 ${
-                          item.status === "unresolved"
-                            ? "text-red-500"
-                            : item.status === "investigating"
+                        className={`h-5 w-5 mt-0.5 ${item.status === "unresolved"
+                          ? "text-red-500"
+                          : item.status === "investigating"
                             ? "text-amber-500"
                             : "text-emerald-500"
-                        }`}
+                          }`}
                       />
                       <div>
                         <div className="font-medium">{item.query}</div>
@@ -359,8 +356,8 @@ const Dashboard = () => {
                           {model.accuracy < 90
                             ? "Needs improvement"
                             : model.accuracy < 95
-                            ? "Good"
-                            : "Excellent"}
+                              ? "Good"
+                              : "Excellent"}
                         </span>
                       </div>
                     </div>
@@ -499,7 +496,7 @@ const Dashboard = () => {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+    </AdminPageContainer>
   );
 };
 

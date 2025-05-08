@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import AdminPageContainer from "./AdminPageContainer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -86,13 +87,10 @@ const WidgetConfig = () => {
   };
 
   return (
-    <div className="container py-6 space-y-8 max-w-7xl">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Widget Configuration</h1>
-        <p className="text-muted-foreground">
-          Customize how your AI chat widget looks and behaves.
-        </p>
-      </div>
+    <AdminPageContainer
+      title="Widget Configuration"
+      description="Customize how your AI chat widget looks and behaves."
+    >
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
@@ -497,7 +495,7 @@ const WidgetConfig = () => {
           </div>
         </div>
       </div>
-    </div>
+    </AdminPageContainer>
   );
 };
 

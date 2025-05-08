@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import AdminPageContainer from "./AdminPageContainer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -131,13 +132,10 @@ const AIModels = () => {
   };
 
   return (
-    <div className="container py-6 space-y-8 max-w-7xl">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">AI Models</h1>
-        <p className="text-muted-foreground">
-          Configure and manage the AI models used by your chat system.
-        </p>
-      </div>
+    <AdminPageContainer
+      title="AI Models"
+      description="Configure and manage the AI models used by your chat system."
+    >
 
       <div className="flex flex-col md:flex-row gap-6">
         <Card className="md:w-64 lg:w-72">
@@ -585,7 +583,7 @@ const AIModels = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </AdminPageContainer>
   );
 };
 
