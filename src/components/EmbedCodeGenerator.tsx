@@ -178,16 +178,26 @@ const EmbedCodeGenerator = ({
     }
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(getCode());
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copyToClipboard = async () => {
+    try {
+      const code = await getCode();
+      navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
 
-    toast({
-      title: "Code Copied",
-      description: "Embed code has been copied to clipboard.",
-      variant: "default",
-    });
+      toast({
+        title: "Code Copied",
+        description: "Embed code has been copied to clipboard.",
+        variant: "default",
+      });
+    } catch (error) {
+      console.error('Error copying to clipboard:', error);
+      toast({
+        title: "Error",
+        description: "Failed to copy embed code to clipboard.",
+        variant: "destructive",
+      });
+    }
   };
 
   const previewUrl = `${baseUrl}/preview/${widgetId}?theme=${theme}&position=${position}${autoOpen ? "&autoOpen=true" : ""}${hideOnMobile ? "&hideOnMobile=true" : ""}${showAdvanced ? `&width=${customWidth}&height=${customHeight}` : ""}`;

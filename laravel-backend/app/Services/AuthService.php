@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,10 +17,17 @@ class AuthService
      */
     public function registerUser(array $data): User
     {
+        // If role_id is not provided, assign the Viewer role by default
+        if (!isset($data['role_id'])) {
+            $viewerRole = Role::where('name', 'Viewer')->first();
+            $data['role_id'] = $viewerRole ? $viewerRole->id : null;
+        }
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'role_id' => $data['role_id'],
         ]);
     }
 

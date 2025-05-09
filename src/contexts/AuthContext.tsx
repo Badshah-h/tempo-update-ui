@@ -48,10 +48,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         if (storedUser) {
           setUser(storedUser);
 
-          // Verify token is still valid by fetching current user
-          const currentUser = await authService.getCurrentUser();
-          if (currentUser) {
-            setUser(currentUser);
+          try {
+            // Verify token is still valid by fetching current user
+            const currentUser = await authService.getCurrentUser();
+            if (currentUser) {
+              setUser(currentUser);
+            }
+          } catch (apiError) {
+            console.warn("Could not fetch current user from API, using stored user:", apiError);
+            // Continue using the stored user
           }
         }
       } catch (err) {

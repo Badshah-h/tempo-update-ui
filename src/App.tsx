@@ -8,9 +8,12 @@ import AIModels from "./components/admin/AIModels";
 import PromptTemplates from "./components/admin/PromptTemplates";
 import Analytics from "./components/admin/Analytics";
 import Settings from "./components/admin/Settings";
+import UserManagement from "./components/admin/UserManagement";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import AccessDeniedPage from "./pages/AccessDeniedPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import RoleProtectedRoute from "./components/auth/RoleProtectedRoute";
 import { AuthProvider } from "./contexts/AuthContext";
 import routes from "tempo-routes";
 
@@ -23,6 +26,7 @@ function App() {
             {/* Auth Routes */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/access-denied" element={<AccessDeniedPage />} />
 
             {/* Protected Admin Routes */}
             <Route
@@ -33,12 +37,62 @@ function App() {
                 </ProtectedRoute>
               }
             >
-              <Route index element={<Dashboard />} />
-              <Route path="widget" element={<WidgetConfig />} />
-              <Route path="models" element={<AIModels />} />
-              <Route path="prompts" element={<PromptTemplates />} />
-              <Route path="settings" element={<Settings />} />
-              <Route path="analytics" element={<Analytics />} />
+              <Route
+                index
+                element={
+                  <RoleProtectedRoute resource="dashboard">
+                    <Dashboard />
+                  </RoleProtectedRoute>
+                }
+              />
+              <Route
+                path="widget"
+                element={
+                  <RoleProtectedRoute resource="widget">
+                    <WidgetConfig />
+                  </RoleProtectedRoute>
+                }
+              />
+              <Route
+                path="models"
+                element={
+                  <RoleProtectedRoute resource="models">
+                    <AIModels />
+                  </RoleProtectedRoute>
+                }
+              />
+              <Route
+                path="prompts"
+                element={
+                  <RoleProtectedRoute resource="prompts">
+                    <PromptTemplates />
+                  </RoleProtectedRoute>
+                }
+              />
+              <Route
+                path="settings"
+                element={
+                  <RoleProtectedRoute resource="settings">
+                    <Settings />
+                  </RoleProtectedRoute>
+                }
+              />
+              <Route
+                path="analytics"
+                element={
+                  <RoleProtectedRoute resource="analytics">
+                    <Analytics />
+                  </RoleProtectedRoute>
+                }
+              />
+              <Route
+                path="users"
+                element={
+                  <RoleProtectedRoute resource="users">
+                    <UserManagement />
+                  </RoleProtectedRoute>
+                }
+              />
             </Route>
 
             {/* Public Home Route */}

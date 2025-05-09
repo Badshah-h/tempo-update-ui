@@ -1,13 +1,16 @@
 import React from "react";
 import RegisterForm from "../components/auth/RegisterForm";
+import AuthLayout from "../components/auth/AuthLayout";
 
 const RegisterPage: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md">
-        <RegisterForm />
-      </div>
-    </div>
+    <AuthLayout
+      title="Create your account"
+      subtitle="Fill in your details to get started"
+      type="register"
+    >
+      <RegisterForm />
+    </AuthLayout>
   );
 };
 

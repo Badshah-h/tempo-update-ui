@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Code, MessageSquare, Settings, Zap } from "lucide-react";
+import { ArrowRight, Code, LogIn, MessageSquare, Settings, UserPlus, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import {
@@ -11,14 +11,19 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
+import ThemeSwitcher from "./ThemeSwitcher";
 import ChatWidget from "./chat/ChatWidget";
 import EmbedCodeGenerator from "./EmbedCodeGenerator";
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const goToAdminDashboard = () => {
-    navigate('/admin');
+  const goToLogin = () => {
+    navigate('/login');
+  };
+
+  const goToRegister = () => {
+    navigate('/register');
   };
 
   return (
@@ -26,6 +31,7 @@ const Home = () => {
       {/* Header */}
       <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur-sm shadow-soft">
         <div className="container flex h-16 items-center justify-between">
+          {/* Logo */}
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-full bg-primary/10 border border-primary/5 shadow-sm">
               <MessageSquare className="h-6 w-6 text-primary" />
@@ -34,6 +40,8 @@ const Home = () => {
               AI Chat System
             </span>
           </div>
+
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <a
               href="#features"
@@ -56,23 +64,50 @@ const Home = () => {
               Embed
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
             </a>
-            <Button
-              variant="outline"
-              className="gap-2 border-primary/20 text-foreground hover:bg-primary/5 hover:border-primary/30 transition-colors duration-300 shadow-sm"
-              onClick={goToAdminDashboard}
-            >
-              <Settings className="h-4 w-4" />
-              Admin Panel
-            </Button>
           </nav>
-          <Button
-            variant="outline"
-            size="icon"
-            className="border-primary/20 text-foreground hover:bg-primary/5 hover:border-primary/30 transition-colors duration-300 shadow-sm"
-            onClick={goToAdminDashboard}
-          >
-            <Settings className="h-4 w-4" />
-          </Button>
+
+          {/* Auth & Theme Controls */}
+          <div className="flex items-center gap-2">
+            {/* Theme Switcher */}
+            <div className="hidden md:block">
+              <ThemeSwitcher />
+            </div>
+
+            {/* Auth Buttons */}
+            <div className="hidden md:flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-foreground hover:bg-primary/5 transition-colors duration-300"
+                onClick={goToLogin}
+              >
+                <LogIn className="h-4 w-4 mr-1" />
+                Login
+              </Button>
+              <Button
+                variant="default"
+                size="sm"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-300"
+                onClick={goToRegister}
+              >
+                <UserPlus className="h-4 w-4 mr-1" />
+                Register
+              </Button>
+            </div>
+
+            {/* Mobile Controls */}
+            <div className="flex md:hidden items-center gap-2">
+              <ThemeSwitcher />
+              <Button
+                variant="default"
+                size="icon"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-300"
+                onClick={goToLogin}
+              >
+                <LogIn className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -377,7 +412,7 @@ const features: Feature[] = [
     title: "Advanced Admin Panel",
     description:
       "Manage your chat system with our comprehensive admin panel. Configure AI models, prompts, and more.",
-    link: "/admin",
+    link: "/login",
   },
   {
     icon: <MessageSquare className="h-5 w-5 text-primary" />,

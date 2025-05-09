@@ -67,6 +67,17 @@ export interface User {
   email_verified_at?: string;
   created_at: string;
   updated_at: string;
+  role?: {
+    id: number;
+    name: string;
+    description: string;
+    is_system: boolean;
+    permissions: {
+      id: number;
+      resource: string;
+      action: string;
+    }[];
+  };
 }
 
 // Get CSRF token from Laravel Sanctum
@@ -157,15 +168,50 @@ const authService = {
       const token = localStorage.getItem("auth_token");
       if (!token) return null;
 
-      const response = await axios.get(`${API_URL}/user`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return response.data.user;
-    } catch (error) {
-      localStorage.removeItem("auth_token");
-      localStorage.removeItem("user");
+      // Try to get the stored user if API fails
+      const storedUser = authService.getStoredUser();
+
+      try {
+        // First try with the standard API endpoint
+        const response = await axios.get(`${API_URL}/user`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        return response.data.user;
+      } catch (apiError) {
+        console.error("Error with /user endpoint:", apiError.message);
+
+        // If that fails, try with the full path
+        try {
+          const response = await axios.get(`http://localhost:8000/api/user`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          return response.data.user;
+        } catch (fullPathError) {
+          console.error("Error with full path endpoint:", fullPathError.message);
+
+          // If both API calls fail but we have a stored user, return that
+          if (storedUser) {
+            console.log("Using stored user as fallback");
+            return storedUser;
+          }
+
+          // Only clear storage if it's an authentication error (401)
+          if (fullPathError.response && fullPathError.response.status === 401) {
+            localStorage.removeItem("auth_token");
+            localStorage.removeItem("user");
+          }
+
+          throw fullPathError;
+        }
+      }
+    } catch (error: any) {
+      console.error("Final error in getCurrentUser:", error.message);
+
+      // For other errors, keep the token but return null
       return null;
     }
   },

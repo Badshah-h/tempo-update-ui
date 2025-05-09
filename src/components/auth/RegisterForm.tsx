@@ -6,17 +6,10 @@ import * as z from "zod";
 import { useAuth } from "../../contexts/AuthContext";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { PasswordInput } from "../ui/password-input";
 import { Label } from "../ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
 import { Alert, AlertDescription } from "../ui/alert";
-import { Loader2 } from "lucide-react";
+import { Loader2, Mail, User } from "lucide-react";
 
 // Form validation schema
 const registerSchema = z
@@ -84,53 +77,65 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
-        <CardDescription>
-          Enter your details to create a new account
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        {(formError || error) && (
-          <Alert variant="destructive" className="mb-4">
-            <AlertDescription>{formError || error}</AlertDescription>
-          </Alert>
-        )}
+    <>
+      {(formError || error) && (
+        <Alert variant="destructive" className="mb-6">
+          <AlertDescription>{formError || error}</AlertDescription>
+        </Alert>
+      )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div className="space-y-4">
+          {/* Name Field */}
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              placeholder="John Doe"
-              {...register("name")}
-              className={errors.name ? "border-destructive" : ""}
-            />
+            <Label htmlFor="name" className="text-sm font-medium">
+              Full Name
+            </Label>
+            <div className="relative">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                <User className="h-4 w-4" />
+              </div>
+              <Input
+                id="name"
+                placeholder="John Doe"
+                {...register("name")}
+                className={`pl-10 ${errors.name ? "border-destructive" : ""}`}
+              />
+            </div>
             {errors.name && (
               <p className="text-sm text-destructive">{errors.name.message}</p>
             )}
           </div>
 
+          {/* Email Field */}
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="name@example.com"
-              {...register("email")}
-              className={errors.email ? "border-destructive" : ""}
-            />
+            <Label htmlFor="email" className="text-sm font-medium">
+              Email
+            </Label>
+            <div className="relative">
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                <Mail className="h-4 w-4" />
+              </div>
+              <Input
+                id="email"
+                type="email"
+                placeholder="name@example.com"
+                {...register("email")}
+                className={`pl-10 ${errors.email ? "border-destructive" : ""}`}
+              />
+            </div>
             {errors.email && (
               <p className="text-sm text-destructive">{errors.email.message}</p>
             )}
           </div>
 
+          {/* Password Field */}
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
+            <Label htmlFor="password" className="text-sm font-medium">
+              Password
+            </Label>
+            <PasswordInput
               id="password"
-              type="password"
               placeholder="••••••••"
               {...register("password")}
               className={errors.password ? "border-destructive" : ""}
@@ -140,13 +145,18 @@ const RegisterForm: React.FC = () => {
                 {errors.password.message}
               </p>
             )}
+            <p className="text-xs text-muted-foreground mt-1">
+              Password must be at least 8 characters and include uppercase, lowercase, and numbers
+            </p>
           </div>
 
+          {/* Confirm Password Field */}
           <div className="space-y-2">
-            <Label htmlFor="password_confirmation">Confirm Password</Label>
-            <Input
+            <Label htmlFor="password_confirmation" className="text-sm font-medium">
+              Confirm Password
+            </Label>
+            <PasswordInput
               id="password_confirmation"
-              type="password"
               placeholder="••••••••"
               {...register("password_confirmation")}
               className={
@@ -159,27 +169,35 @@ const RegisterForm: React.FC = () => {
               </p>
             )}
           </div>
+        </div>
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Registering...
-              </>
-            ) : (
-              "Register"
-            )}
-          </Button>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-center border-t p-4">
-        <p className="text-sm text-muted-foreground">
-          Already have an account?{" "}
-          <Link to="/login" className="text-primary hover:underline">
-            Login
-          </Link>
-        </p>
-      </CardFooter>
-    </Card>
+        {/* Submit Button */}
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isSubmitting}
+          size="lg"
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating account...
+            </>
+          ) : (
+            "Create Account"
+          )}
+        </Button>
+
+        {/* Login Link */}
+        <div className="text-center mt-6">
+          <p className="text-sm text-muted-foreground">
+            Already have an account?{" "}
+            <Link to="/login" className="text-primary font-medium hover:underline">
+              Sign in
+            </Link>
+          </p>
+        </div>
+      </form>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { UserDetails } from "@/types/admin";
-import { getCurrentUser, checkPermission } from "@/services/adminService";
+import authService from "@/services/authService";
 
 export const usePermissions = () => {
   const [user, setUser] = useState<UserDetails | null>(null);
@@ -11,9 +11,11 @@ export const usePermissions = () => {
     const fetchUser = async () => {
       try {
         setLoading(true);
-        const userData = await getCurrentUser();
-        setUser(userData);
-        setError(null);
+        const userData = await authService.getCurrentUser();
+        if (userData) {
+          setUser(userData as unknown as UserDetails);
+          setError(null);
+        }
       } catch (err) {
         setError(err as Error);
         setUser(null);
@@ -27,8 +29,12 @@ export const usePermissions = () => {
 
   const hasPermission = useCallback(
     (resource: string, action: string): boolean => {
-      if (!user) return false;
-      return checkPermission(user, resource, action);
+      if (!user || !user.role || !user.role.permissions) return false;
+
+      const permission = user.role.permissions.find(p => p.resource === resource);
+      if (!permission) return false;
+
+      return permission.actions.includes(action as any);
     },
     [user],
   );

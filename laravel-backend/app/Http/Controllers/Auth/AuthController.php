@@ -31,9 +31,9 @@ class AuthController extends Controller
     public function register(RegisterRequest $request): JsonResponse
     {
         $user = $this->authService->registerUser($request->validated());
-        
+
         $token = $user->createToken('auth_token')->plainTextToken;
-        
+
         return response()->json([
             'status' => 'success',
             'message' => 'User registered successfully',
@@ -51,17 +51,17 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->validated();
-        
+
         if (!$this->authService->attemptLogin($credentials)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid credentials'
             ], 401);
         }
-        
+
         $user = $this->authService->getUserByEmail($credentials['email']);
         $token = $user->createToken('auth_token')->plainTextToken;
-        
+
         return response()->json([
             'status' => 'success',
             'message' => 'User logged in successfully',
@@ -78,6 +78,23 @@ class AuthController extends Controller
      */
     public function user(Request $request): JsonResponse
     {
+        // For the debug route, return a mock user if not authenticated
+        if (!$request->user() && $request->route()->uri == 'api/user-debug') {
+            return response()->json([
+                'status' => 'success',
+                'user' => [
+                    'id' => 0,
+                    'name' => 'Debug User',
+                    'email' => 'debug@example.com',
+                    'role' => [
+                        'name' => 'Debug',
+                        'permissions' => []
+                    ]
+                ],
+                'debug_mode' => true
+            ]);
+        }
+
         return response()->json([
             'status' => 'success',
             'user' => $request->user()
@@ -93,7 +110,7 @@ class AuthController extends Controller
     public function logout(Request $request): JsonResponse
     {
         $request->user()->currentAccessToken()->delete();
-        
+
         return response()->json([
             'status' => 'success',
             'message' => 'User logged out successfully'

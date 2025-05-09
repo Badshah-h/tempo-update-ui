@@ -16,6 +16,13 @@ export interface Conversation {
 }
 
 export interface ChatWidgetConfig {
+    widgetId: string;
+    theme: "light" | "dark" | "system";
+    autoOpen: boolean;
+    hideOnMobile: boolean;
+    width: string;
+    height: string;
+    apiKey: string;
     title: string;
     subtitle: string;
     primaryColor: string;
@@ -27,5 +34,14 @@ export interface ChatWidgetConfig {
     suggestedQuestions: string[];
     fontFamily: string;
     borderRadius: number;
+    customWidth: string;
+    customHeight: string;
     spacing: "compact" | "comfortable" | "spacious";
+}
+
+export interface ChatWidgetTheme {
+    name: string;
+    primaryColor: string;
+    secondaryColor: string;
+    backgroundColor: string;
 }
