@@ -5,6 +5,7 @@ import AdminLayout from "./components/admin/AdminLayout";
 import Dashboard from "./components/admin/Dashboard";
 import WidgetConfig from "./components/admin/WidgetConfig";
 import AIModels from "./components/admin/AIModels";
+import AIModelConfig from "./components/admin/AIModelConfig";
 import PromptTemplates from "./components/admin/PromptTemplates";
 import Analytics from "./components/admin/Analytics";
 import Settings from "./components/admin/Settings";
@@ -61,6 +62,8 @@ function App() {
                   </RoleProtectedRoute>
                 }
               />
+              <Route path="models/:modelId" element={<AIModelConfig />} />
+              <Route path="models/new" element={<AIModelConfig />} />
               <Route
                 path="prompts"
                 element={
