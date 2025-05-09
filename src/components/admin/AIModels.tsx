@@ -1,6 +1,6 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -60,6 +60,7 @@ import {
 } from "lucide-react";
 
 const AIModels = () => {
+  const navigate = useNavigate();
   const [activeModel, setActiveModel] = useState("gemini-pro");
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [modelToDelete, setModelToDelete] = useState(null);
@@ -136,7 +137,6 @@ const AIModels = () => {
       title="AI Models"
       description="Configure and manage the AI models used by your chat system."
     >
-
       <div className="flex flex-col md:flex-row gap-6">
         <Card className="md:w-64 lg:w-72">
           <CardHeader>
@@ -168,7 +168,9 @@ const AIModels = () => {
                       </div>
                     </div>
                     <Badge
-                      variant={model.status === "active" ? "default" : "outline"}
+                      variant={
+                        model.status === "active" ? "default" : "outline"
+                      }
                       className="text-xs"
                     >
                       {model.status}
@@ -180,7 +182,11 @@ const AIModels = () => {
             </motion.div>
           </CardContent>
           <CardFooter className="p-3">
-            <Button className="w-full gap-2" variant="outline">
+            <Button
+              className="w-full gap-2"
+              variant="outline"
+              onClick={() => navigate("/admin/models/new")}
+            >
               <Plus className="h-4 w-4" />
               Add New Model
             </Button>
@@ -230,7 +236,11 @@ const AIModels = () => {
                         >
                           <Trash2 className="h-4 w-4 text-destructive" />
                         </Button>
-                        <Button variant="outline" size="icon">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => navigate(`/admin/models/${model.id}`)}
+                        >
                           <Edit className="h-4 w-4" />
                         </Button>
                       </div>
@@ -265,7 +275,9 @@ const AIModels = () => {
                       <Separator />
 
                       <div className="space-y-4">
-                        <h3 className="text-lg font-medium">Model Parameters</h3>
+                        <h3 className="text-lg font-medium">
+                          Model Parameters
+                        </h3>
 
                         <div className="grid gap-6 md:grid-cols-2">
                           <div className="space-y-2">
