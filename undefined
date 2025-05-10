@@ -1,28 +1,9 @@
-import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import LoginForm from "@/components/auth/LoginForm";
-import RegisterForm from "@/components/auth/RegisterForm";
-import { AuthProvider } from "@/contexts/AuthContext";
+import AIModels from "@/components/admin/AIModels";
 
-export default function AuthFormsStoryboard() {
+export default function AIModelsStoryboard() {
   return (
-    <div className="bg-background min-h-screen p-8">
-      <AuthProvider>
-        <div className="max-w-md mx-auto">
-          <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="register">Register</TabsTrigger>
-            </TabsList>
-            <TabsContent value="login" className="mt-6">
-              <LoginForm />
-            </TabsContent>
-            <TabsContent value="register" className="mt-6">
-              <RegisterForm />
-            </TabsContent>
-          </Tabs>
-        </div>
-      </AuthProvider>
+    <div className="bg-background min-h-screen p-4">
+      <AIModels />
     </div>
   );
 }

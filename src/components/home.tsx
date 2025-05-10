@@ -136,6 +136,16 @@ const Home = () => {
               <Code className="h-4 w-4" />
               View Documentation
             </Button>
+            {/* TEMPORARY: Admin access button for development purposes */}
+            <Button
+              size="lg"
+              variant="default"
+              className="gap-2 bg-purple-600 hover:bg-purple-700 text-white shadow-medium hover:shadow-hard transition-all duration-300"
+              onClick={() => navigate("/admin")}
+            >
+              <Settings className="h-4 w-4" />
+              Admin Dashboard
+            </Button>
           </motion.div>
         </div>
       </section>
@@ -154,15 +164,15 @@ const Home = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => {
-            const CardComponent = feature.link ?
-              (props: React.ComponentProps<typeof Card>) => (
-                <Card
-                  {...props}
-                  onClick={() => navigate(feature.link!)}
-                  className={`${props.className} cursor-pointer`}
-                />
-              ) :
-              Card;
+            const CardComponent = feature.link
+              ? (props: React.ComponentProps<typeof Card>) => (
+                  <Card
+                    {...props}
+                    onClick={() => navigate(feature.link!)}
+                    className={`${props.className} cursor-pointer`}
+                  />
+                )
+              : Card;
 
             return (
               <CardComponent

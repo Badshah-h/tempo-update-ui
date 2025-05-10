@@ -80,4 +80,10 @@ export const testAiModel = async (id: string, query: string, testParameters?: Re
         getAuthHeaders()
     );
     return response.data.data;
-}; 
+};
+
+export { getAiModelConfigs as getModels };
+export { deleteAiModelConfig as deleteModel };
+export { toggleAiModelConfigActive as toggleModelStatus };
+export { testAiModel as testModel };
+export type { AiModelConfig as AIModel }; 

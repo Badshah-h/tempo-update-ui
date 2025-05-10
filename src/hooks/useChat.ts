@@ -23,7 +23,7 @@ export const useChat = ({ conversationId, initialMessages = [] }: UseChatProps =
         setMessages(loadedMessages);
         setError(null);
       } catch (err) {
-        setError('Failed to load messages');
+        setError("Failed to load messages");
         console.error(err);
       } finally {
         setIsLoading(false);
@@ -34,8 +34,9 @@ export const useChat = ({ conversationId, initialMessages = [] }: UseChatProps =
   }, [conversationId, initialMessages]);
 
   // Send a message and get a response
-  const handleSendMessage = useCallback(async (content: string) => {
-    if (!content.trim()) return;
+  const handleSendMessage = useCallback(
+    async (content: string) => {
+      if (!content.trim()) return;
 
     try {
       // Add user message to the chat
@@ -46,19 +47,19 @@ export const useChat = ({ conversationId, initialMessages = [] }: UseChatProps =
         timestamp: new Date(),
       };
 
-      setMessages((prev) => [...prev, userMessage]);
-      
-      // Show loading indicator
-      const loadingMessage: Message = {
-        id: `loading-${Date.now()}`,
-        content: '',
-        sender: 'ai',
-        timestamp: new Date(),
-        isLoading: true,
-      };
-      
-      setMessages((prev) => [...prev, loadingMessage]);
-      setIsLoading(true);
+        setMessages((prev) => [...prev, userMessage]);
+
+        // Show loading indicator
+        const loadingMessage: Message = {
+          id: `loading-${Date.now()}`,
+          content: "",
+          sender: "ai",
+          timestamp: new Date(),
+          isLoading: true,
+        };
+
+        setMessages((prev) => [...prev, loadingMessage]);
+        setIsLoading(true);
 
       // Get AI response
       const aiResponse = await sendMessage(content, conversationId);
