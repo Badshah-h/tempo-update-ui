@@ -72,8 +72,14 @@ export interface User {
 // Get CSRF token from Laravel Sanctum
 const getCsrfToken = async () => {
   try {
+    console.log("getCsrfToken: Getting CSRF token");
     // The URL should be the Laravel backend URL without 'api/' for the sanctum endpoint
-    await axios.get(`${API_URL.replace('/api', '')}/sanctum/csrf-cookie`);
+    const csrfUrl = `${API_URL.replace('/api', '')}/sanctum/csrf-cookie`;
+    console.log("getCsrfToken: CSRF URL:", csrfUrl);
+
+    const response = await axios.get(csrfUrl);
+    console.log("getCsrfToken: CSRF response status:", response.status);
+    return response;
   } catch (error) {
     console.error("Failed to get CSRF token:", error);
     throw error;
@@ -124,11 +130,17 @@ const authService = {
 
   // Logout user
   logout: async (): Promise<AuthResponse> => {
+    console.log("authService: logout called");
     try {
       // Get CSRF token first
+      console.log("authService: getting CSRF token");
       await getCsrfToken();
+      console.log("authService: CSRF token obtained");
 
       const token = localStorage.getItem("auth_token");
+      console.log("authService: token from localStorage:", token ? "exists" : "null");
+
+      console.log("authService: calling logout API");
       const response = await axios.post(
         `${API_URL}/logout`,
         {},
@@ -138,13 +150,21 @@ const authService = {
           },
         },
       );
+      console.log("authService: logout API response:", response.data);
+
+      console.log("authService: removing token and user from localStorage");
       localStorage.removeItem("auth_token");
       localStorage.removeItem("user");
       return response.data;
     } catch (error: any) {
+      console.error("authService: logout error", error);
+
+      console.log("authService: removing token and user from localStorage (error case)");
       localStorage.removeItem("auth_token");
       localStorage.removeItem("user");
+
       if (error.response) {
+        console.error("authService: API error response:", error.response.data);
         throw error.response.data;
       }
       throw { message: "Network error occurred" };
@@ -162,10 +182,19 @@ const authService = {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      // Store the updated user data
+      if (response.data.user) {
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+      }
+
       return response.data.user;
     } catch (error) {
-      localStorage.removeItem("auth_token");
-      localStorage.removeItem("user");
+      // Don't remove token on every error - only on 401 unauthorized
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        localStorage.removeItem("auth_token");
+        localStorage.removeItem("user");
+      }
       return null;
     }
   },

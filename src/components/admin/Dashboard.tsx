@@ -38,7 +38,7 @@ const Dashboard = () => {
   const [showCustomize, setShowCustomize] = useState(false);
   const [activeView, setActiveView] = useState<"standard" | "custom">(
     (localStorage.getItem("dashboardView") as "standard" | "custom") ||
-      "standard",
+    "standard",
   );
 
   const useEffect = React.useEffect;
@@ -325,13 +325,12 @@ const Dashboard = () => {
                 className="flex items-start gap-3 p-2 rounded-md hover:bg-muted/50 transition-colors border-b last:border-0 pb-3 last:pb-0"
               >
                 <AlertCircle
-                  className={`h-5 w-5 mt-0.5 ${
-                    item.status === "unresolved"
-                      ? "text-rose-500"
-                      : item.status === "investigating"
-                        ? "text-amber-500"
-                        : "text-emerald-500"
-                  }`}
+                  className={`h-5 w-5 mt-0.5 ${item.status === "unresolved"
+                    ? "text-rose-500"
+                    : item.status === "investigating"
+                      ? "text-amber-500"
+                      : "text-emerald-500"
+                    }`}
                 />
                 <div>
                   <div className="font-medium">{item.query}</div>

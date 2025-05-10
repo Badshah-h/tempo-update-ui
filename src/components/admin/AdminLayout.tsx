@@ -30,6 +30,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { usePermissions } from "@/hooks/usePermissions";
+import { useAuth } from "@/contexts/AuthContext";
+import { useCustomToast } from "@/hooks/useToast";
+import { useConfirmationDialog } from "@/components/ui/confirmation-dialog";
 
 interface NavItemProps {
   icon: React.ReactNode;
@@ -97,13 +100,56 @@ const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const { user, isAdmin, canView } = usePermissions();
+  const { logout } = useAuth();
+  const toast = useCustomToast();
+  const { openConfirmDialog, ConfirmationDialog } = useConfirmationDialog();
+
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     document.documentElement.classList.toggle("dark");
   };
 
-  const { canView } = usePermissions();
+  const handleLogout = () => {
+    console.log("Logout button clicked");
+    openConfirmDialog({
+      title: "Confirm Logout",
+      description: "Are you sure you want to log out?",
+      confirmText: "Logout",
+      cancelText: "Cancel",
+      variant: "default",
+      onConfirm: async () => {
+        try {
+          console.log("Logout confirmed, calling logout API");
+          await logout();
+          console.log("Logout API call successful");
+          toast.success("Logged out successfully");
+
+          // Force clear any remaining auth data
+          localStorage.removeItem("auth_token");
+          localStorage.removeItem("user");
+
+          // Redirect to login page
+          console.log("Redirecting to login page");
+          setTimeout(() => {
+            navigate("/login", { replace: true });
+          }, 500);
+        } catch (error) {
+          console.error("Logout failed:", error);
+          toast.error("Failed to logout. Please try again.");
+
+          // Even if API call fails, clear local storage and redirect
+          localStorage.removeItem("auth_token");
+          localStorage.removeItem("user");
+
+          setTimeout(() => {
+            navigate("/login", { replace: true });
+          }, 500);
+        }
+      }
+    });
+  };
 
   const navItems = [
     {
@@ -150,11 +196,15 @@ const AdminLayout = () => {
     },
   ];
 
-  // Filter nav items based on user permissions
-  const filteredNavItems = navItems.filter((item) => canView(item.resource));
+  // Filter nav items based on user permissions or admin status
+  const filteredNavItems = isAdmin
+    ? navItems // Show all items for admin users
+    : navItems.filter(item => canView(item.resource));
 
   return (
     <div className="flex min-h-screen bg-background">
+      {/* Confirmation Dialog Component */}
+      <ConfirmationDialog />
       {/* Mobile overlay */}
       {isMobileOpen && (
         <div
@@ -298,7 +348,7 @@ const AdminLayout = () => {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onClick={() => navigate("/")}
+                    onClick={handleLogout}
                     className="cursor-pointer text-destructive hover:bg-destructive/5 focus:bg-destructive/5"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
@@ -401,7 +451,7 @@ const AdminLayout = () => {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={() => navigate("/")}
+                  onClick={handleLogout}
                   className="cursor-pointer text-destructive hover:bg-destructive/5 focus:bg-destructive/5"
                 >
                   <LogOut className="mr-2 h-4 w-4" />

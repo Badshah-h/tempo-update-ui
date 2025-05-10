@@ -8,10 +8,12 @@ import AIModels from "./components/admin/AIModels";
 import PromptTemplates from "./components/admin/PromptTemplates";
 import Analytics from "./components/admin/Analytics";
 import Settings from "./components/admin/Settings";
+import UserManagement from "./components/admin/UserManagement";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { AuthProvider } from "./contexts/AuthContext";
+import { Toaster } from "./components/ui/toaster";
 import routes from "tempo-routes";
 
 function App() {
@@ -39,6 +41,7 @@ function App() {
               <Route path="prompts" element={<PromptTemplates />} />
               <Route path="settings" element={<Settings />} />
               <Route path="analytics" element={<Analytics />} />
+              <Route path="users" element={<UserManagement />} />
             </Route>
 
             {/* Public Home Route */}
@@ -48,6 +51,7 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
+          <Toaster />
         </>
       </Suspense>
     </AuthProvider>

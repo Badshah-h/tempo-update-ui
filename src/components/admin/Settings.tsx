@@ -24,6 +24,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
   Palette,
   Type,
   Monitor,
@@ -36,8 +44,10 @@ import {
   Bell,
   Shield,
   User,
-  Badge,
+  Badge as BadgeIcon,
+  Table as TableIcon,
 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const Settings = () => {
   const [theme, setTheme] = useState("system");
@@ -97,7 +107,7 @@ const Settings = () => {
             <span>Security</span>
           </TabsTrigger>
           <TabsTrigger value="permissions" className="flex items-center gap-2">
-            <Badge className="h-4 w-4" />
+            <BadgeIcon className="h-4 w-4" />
             <span>Permissions</span>
           </TabsTrigger>
         </TabsList>
@@ -545,7 +555,9 @@ const Settings = () => {
                         Chrome on Windows • Active now
                       </p>
                     </div>
-                    <Badge>Current</Badge>
+                    <div className="flex items-center justify-between">
+                      <Badge>Current</Badge>
+                    </div>
                   </div>
                   <div className="flex items-center justify-between">
                     <div>

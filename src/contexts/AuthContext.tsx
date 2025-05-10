@@ -93,14 +93,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const logout = async () => {
+    console.log("AuthContext: logout called");
     setLoading(true);
     try {
+      console.log("AuthContext: calling authService.logout()");
       await authService.logout();
+      console.log("AuthContext: authService.logout() successful");
       setUser(null);
+      console.log("AuthContext: user set to null");
     } catch (err: any) {
+      console.error("AuthContext: logout error", err);
       setError(err.message || "Failed to logout");
     } finally {
       setLoading(false);
+      console.log("AuthContext: logout complete, loading set to false");
     }
   };
 

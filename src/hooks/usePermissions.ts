@@ -1,16 +1,23 @@
 import { useState, useEffect, useCallback } from "react";
 import { UserDetails } from "@/types/admin";
-import { getCurrentUser, checkPermission } from "@/services/adminService";
+import { getCurrentUser, checkPermission, checkIsAdmin } from "@/services/adminService";
 
 export const usePermissions = () => {
   const [user, setUser] = useState<UserDetails | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         setLoading(true);
+
+        // Check if user is admin
+        const adminStatus = await checkIsAdmin();
+        setIsAdmin(adminStatus);
+
+        // Get user data
         const userData = await getCurrentUser();
         setUser(userData);
         setError(null);
@@ -27,10 +34,15 @@ export const usePermissions = () => {
 
   const hasPermission = useCallback(
     (resource: string, action: string): boolean => {
+      // If user is admin, always grant permission
+      if (isAdmin) {
+        return true;
+      }
+
       if (!user) return false;
       return checkPermission(user, resource, action);
     },
-    [user],
+    [user, isAdmin],
   );
 
   const canView = useCallback(
@@ -79,6 +91,7 @@ export const usePermissions = () => {
     user,
     loading,
     error,
+    isAdmin,
     hasPermission,
     canView,
     canCreate,

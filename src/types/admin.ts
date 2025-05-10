@@ -1,14 +1,3 @@
-export interface AIModel {
-  id: string;
-  name: string;
-  provider: string;
-  type: string;
-  status: "active" | "inactive";
-  performance: number;
-  costPerQuery: string;
-  apiKey: string;
-}
-
 export interface PromptTemplate {
   id: string;
   name: string;
