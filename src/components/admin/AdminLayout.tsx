@@ -103,7 +103,10 @@ const AdminLayout = () => {
     document.documentElement.classList.toggle("dark");
   };
 
-  const { canView } = usePermissions();
+  // Get the usePermissions hook but modify the canView function to always return true
+  const { canView: originalCanView } = usePermissions();
+  // Override the canView function to always return true, making all navigation items visible
+  const canView = (resource: string) => true;
 
   const navItems = [
     {
@@ -150,8 +153,8 @@ const AdminLayout = () => {
     },
   ];
 
-  // Filter nav items based on user permissions
-  const filteredNavItems = navItems.filter((item) => canView(item.resource));
+  // Show all navigation items by not filtering them based on permissions
+  const filteredNavItems = navItems;
 
   return (
     <div className="flex min-h-screen bg-background">

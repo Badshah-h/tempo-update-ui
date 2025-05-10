@@ -13,7 +13,7 @@ interface RoleProtectedRouteProps {
 
 /**
  * A route component that protects routes based on user authentication and permissions
- * 
+ *
  * @param children - The component to render if the user has permission
  * @param resource - The resource the user needs permission to access
  * @param action - The action the user needs permission to perform (defaults to "view")
@@ -29,6 +29,9 @@ const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({
   const { hasPermission, loading: permissionsLoading } = usePermissions();
   const location = useLocation();
 
+  // TEMPORARY: Authentication and permission checks bypassed for development purposes
+  // IMPORTANT: Re-enable this code before production deployment
+  /*
   // Show loading state while checking authentication and permissions
   if (loading || permissionsLoading) {
     return (
@@ -47,6 +50,9 @@ const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({
   if (!hasPermission(resource, action)) {
     return <Navigate to="/access-denied" state={{ from: location }} replace />;
   }
+  */
+
+  // TEMPORARY: All routes are publicly accessible regardless of permissions
 
   // If authenticated and has permission, render the children
   return <>{children}</>;

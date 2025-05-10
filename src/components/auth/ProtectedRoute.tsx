@@ -14,6 +14,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
 
+  // TEMPORARY: Authentication check bypassed for development purposes
+  // IMPORTANT: Re-enable this code before production deployment
+  /*
   if (loading) {
     // You could render a loading spinner here
     return (
@@ -27,6 +30,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     // Redirect to login page with the return url
     return <Navigate to={redirectTo} state={{ from: location }} replace />;
   }
+  */
+
+  // TEMPORARY: All routes are publicly accessible
 
   return <>{children}</>;
 };

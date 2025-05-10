@@ -55,7 +55,7 @@ import {
   Loader2,
 } from "lucide-react";
 import AdminPageContainer from "./AdminPageContainer";
-import { getAIModel, updateAIModel } from "@/services/adminService";
+import { getModel, updateModel, testModel } from "@/services/aiModelService";
 import { AIModel } from "@/types/admin";
 
 // Form validation schema
@@ -116,7 +116,7 @@ const AIModelConfig = () => {
 
       setLoading(true);
       try {
-        const modelData = await getAIModel(modelId);
+        const modelData = await getModel(Number(modelId));
         if (modelData) {
           setModel(modelData);
 
@@ -155,7 +155,7 @@ const AIModelConfig = () => {
 
     setSaving(true);
     try {
-      await updateAIModel(modelId, data);
+      await updateModel(Number(modelId), data);
       toast({
         title: "Success",
         description: "Model configuration saved successfully.",
@@ -176,25 +176,36 @@ const AIModelConfig = () => {
     setTestLoading(true);
     try {
       // In a real app, this would call the AI model API
-      await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate API call
+      if (modelId) {
+        const result = await testModel(Number(modelId), testQuery);
+        setTestResponse(result.response);
+        setTestMetrics({
+          time: `${result.metrics.time_taken.toFixed(1)}s`,
+          tokens: result.metrics.tokens_used,
+          cost: `$${result.metrics.estimated_cost.toFixed(5)}`,
+        });
+      } else {
+        // Fallback for demo purposes
+        await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate API call
 
-      setTestResponse(
-        "Our AI chat system offers several key features:\n\n" +
-          "1. Context-aware AI responses that understand user queries\n" +
-          "2. Multiple integration options (iFrame and Web Component)\n" +
-          "3. Real-time communication via WebSockets\n" +
-          "4. Comprehensive admin dashboard for configuration\n" +
-          "5. Support for multiple AI models (Gemini and Hugging Face)\n" +
-          "6. Customizable appearance to match your brand\n" +
-          "7. Analytics and performance monitoring\n\n" +
-          "Would you like more information about any specific feature?",
-      );
+        setTestResponse(
+          "Our AI chat system offers several key features:\n\n" +
+            "1. Context-aware AI responses that understand user queries\n" +
+            "2. Multiple integration options (iFrame and Web Component)\n" +
+            "3. Real-time communication via WebSockets\n" +
+            "4. Comprehensive admin dashboard for configuration\n" +
+            "5. Support for multiple AI models (Gemini and Hugging Face)\n" +
+            "6. Customizable appearance to match your brand\n" +
+            "7. Analytics and performance monitoring\n\n" +
+            "Would you like more information about any specific feature?",
+        );
 
-      setTestMetrics({
-        time: "1.3s",
-        tokens: 217,
-        cost: "$0.00043",
-      });
+        setTestMetrics({
+          time: "1.3s",
+          tokens: 217,
+          cost: "$0.00043",
+        });
+      }
     } catch (error) {
       console.error("Error testing model:", error);
       toast({
