@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            $table->string('base_url')->nullable();
+            $table->string('description')->nullable();
             $table->string('logo_url')->nullable();
-            $table->json('capabilities')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->json('auth_requirements')->nullable();
+            $table->json('available_models')->nullable();
+            $table->json('default_parameters')->nullable();
             $table->timestamps();
         });
     }
