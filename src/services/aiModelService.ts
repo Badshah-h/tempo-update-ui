@@ -1,7 +1,7 @@
 import axios from "axios";
-import { AiProvider, AiModelConfig } from "@/types/ai";
+import { AiProvider, AiModelConfig, AIModel } from "@/types/ai";
 
-const API_URL = "http://localhost:8000/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 const getAuthHeaders = () => {
     const token = typeof window !== 'undefined' ? localStorage.getItem("auth_token") : null;
@@ -82,8 +82,83 @@ export const testAiModel = async (id: string, query: string, testParameters?: Re
     return response.data.data;
 };
 
+// AI Models API
+export const getAIModels = async (activeOnly = false): Promise<AIModel[]> => {
+    const response = await axios.get(
+        `${API_URL}/ai-models?active_only=${activeOnly ? 1 : 0}`,
+        getAuthHeaders()
+    );
+    return response.data.data;
+};
+
+export const getAIModelsByProvider = async (
+    providerId: number,
+    activeOnly = false
+): Promise<AIModel[]> => {
+    const response = await axios.get(
+        `${API_URL}/providers/${providerId}/models?active_only=${activeOnly ? 1 : 0}`,
+        getAuthHeaders()
+    );
+    return response.data.data;
+};
+
+export const getAIModel = async (id: number): Promise<AIModel> => {
+    const response = await axios.get(
+        `${API_URL}/ai-models/${id}`,
+        getAuthHeaders()
+    );
+    return response.data.data;
+};
+
+export const createAIModel = async (model: Partial<AIModel>): Promise<AIModel> => {
+    const response = await axios.post(
+        `${API_URL}/ai-models`,
+        model,
+        getAuthHeaders()
+    );
+    return response.data.data;
+};
+
+export const updateAIModel = async (
+    id: number,
+    model: Partial<AIModel>
+): Promise<AIModel> => {
+    const response = await axios.put(
+        `${API_URL}/ai-models/${id}`,
+        model,
+        getAuthHeaders()
+    );
+    return response.data.data;
+};
+
+export const deleteAIModel = async (id: number): Promise<void> => {
+    await axios.delete(
+        `${API_URL}/ai-models/${id}`,
+        getAuthHeaders()
+    );
+};
+
+export const toggleAIModelActive = async (id: number): Promise<AIModel> => {
+    const response = await axios.post(
+        `${API_URL}/ai-models/${id}/toggle-active`,
+        {},
+        getAuthHeaders()
+    );
+    return response.data.data;
+};
+
+export const getDefaultAIModel = async (): Promise<AIModel | null> => {
+    try {
+        const models = await getAIModels(true);
+        return models.find(model => model.is_default) || null;
+    } catch (error) {
+        console.error('Error fetching default AI model:', error);
+        return null;
+    }
+};
+
+// Legacy exports for backward compatibility
 export { getAiModelConfigs as getModels };
 export { deleteAiModelConfig as deleteModel };
 export { toggleAiModelConfigActive as toggleModelStatus };
 export { testAiModel as testModel };
-export type { AiModelConfig as AIModel }; 

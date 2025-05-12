@@ -1,12 +1,18 @@
 export interface AIModel {
-    id: string;
+    id: number;
+    provider_id: number;
     name: string;
-    provider: string;
+    slug: string;
     type: string;
-    status: "active" | "inactive";
-    performance: number;
-    costPerQuery: string;
-    apiKey: string;
+    capabilities: string[] | null;
+    max_tokens: number;
+    api_endpoint: string | null;
+    credentials?: string | Record<string, any>;
+    is_active: boolean;
+    is_default: boolean;
+    created_at: string;
+    updated_at: string;
+    provider?: AiProvider;
 }
 
 export interface AiProvider {
@@ -38,4 +44,22 @@ export interface AiModelConfig {
     created_at: string;
     updated_at: string;
     provider?: AiProvider;
-} 
+}
+
+export interface AiProviderConfig {
+    id: number;
+    provider_id: number;
+    version: string;
+    auth_config: Record<string, any> | null;
+    endpoints: Record<string, any> | null;
+    request_templates: Record<string, any> | null;
+    response_mappings: Record<string, any> | null;
+    parameter_schema: Record<string, any> | null;
+    stream_config: Record<string, any> | null;
+    token_calculation: Record<string, any> | null;
+    cost_calculation: Record<string, any> | null;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+    provider?: AiProvider;
+}

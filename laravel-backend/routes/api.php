@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\API\AiProviderController;
 use App\Http\Controllers\API\AiModelConfigController;
+use App\Http\Controllers\API\AIModelController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\UserRoleController;
+use App\Http\Controllers\API\AiProviderConfigController;
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -25,6 +27,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('ai-model-configs', AiModelConfigController::class);
     Route::post('ai-model-configs/{id}/toggle-active', [AiModelConfigController::class, 'toggleActive']);
     Route::post('ai-model-configs/{id}/test', [AiModelConfigController::class, 'testModel']);
+
+    // AI Models routes
+    Route::apiResource('ai-models', AIModelController::class);
+    Route::get('providers/{providerId}/models', [AIModelController::class, 'getByProvider']);
+    Route::post('ai-models/{id}/toggle-active', [AIModelController::class, 'toggleActive']);
+
+    // AI Provider Config routes (Dynamic Provider Integration)
+    Route::apiResource('ai-provider-configs', AiProviderConfigController::class);
+    Route::post('ai-provider-configs/{id}/set-active', [AiProviderConfigController::class, 'setActive']);
+    Route::post('ai-provider-configs/{id}/test', [AiProviderConfigController::class, 'testConfig']);
+    Route::post('ai-provider-configs/create-with-provider', [AiProviderConfigController::class, 'createProviderWithConfig']);
+    Route::get('ai-provider-configs/default-templates', [AiProviderConfigController::class, 'getDefaultTemplates']);
 
     // User management
     Route::apiResource('users', UserController::class);

@@ -164,10 +164,29 @@ const AdminLayout = () => {
       href: "/admin/widget",
       resource: "widget",
     },
+    // Legacy AI Models implementation - commented out as requested
+    // {
+    //   icon: <Code className="h-5 w-5" />,
+    //   label: "AI Models (Legacy)",
+    //   href: "/admin/models",
+    //   resource: "models",
+    // },
     {
       icon: <Code className="h-5 w-5" />,
       label: "AI Models",
-      href: "/admin/models",
+      href: "/admin/ai-models",
+      resource: "models",
+    },
+    {
+      icon: <Code className="h-5 w-5" />,
+      label: "Add AI Provider",
+      href: "/admin/ai-provider-config",
+      resource: "models",
+    },
+    {
+      icon: <Code className="h-5 w-5" />,
+      label: "API Tester",
+      href: "/api-tester",
       resource: "models",
     },
     {

@@ -13,7 +13,7 @@ class OpenAIAdapter extends BaseAdapter
     {
         return 'https://api.openai.com';
     }
-    
+
     /**
      * Get the default endpoint for this adapter.
      *
@@ -23,7 +23,7 @@ class OpenAIAdapter extends BaseAdapter
     {
         return 'v1/chat/completions';
     }
-    
+
     /**
      * Get the parameters for the API request.
      *
@@ -34,16 +34,16 @@ class OpenAIAdapter extends BaseAdapter
     protected function getRequestParams(string $message, array $options = []): array
     {
         $systemPrompt = $options['system_prompt'] ?? $this->model->system_prompt ?? '';
-        
+
         $messages = [];
-        
+
         if (!empty($systemPrompt)) {
             $messages[] = [
                 'role' => 'system',
                 'content' => $systemPrompt
             ];
         }
-        
+
         // Add previous messages if provided
         if (isset($options['previous_messages']) && is_array($options['previous_messages'])) {
             foreach ($options['previous_messages'] as $prevMessage) {
@@ -53,13 +53,13 @@ class OpenAIAdapter extends BaseAdapter
                 ];
             }
         }
-        
+
         // Add the current message
         $messages[] = [
             'role' => 'user',
             'content' => $message
         ];
-        
+
         return array_merge([
             'model' => $options['model_name'] ?? $this->model->slug,
             'messages' => $messages,
@@ -70,7 +70,7 @@ class OpenAIAdapter extends BaseAdapter
             'frequency_penalty' => 0,
         ], $this->defaultParams, $options['parameters'] ?? []);
     }
-    
+
     /**
      * Parse the API response.
      *
@@ -80,15 +80,15 @@ class OpenAIAdapter extends BaseAdapter
     protected function parseResponse(array $response): array
     {
         $content = '';
-        
+
         if (isset($response['choices'][0]['message']['content'])) {
             $content = $response['choices'][0]['message']['content'];
         }
-        
+
         $promptTokens = $response['usage']['prompt_tokens'] ?? 0;
         $completionTokens = $response['usage']['completion_tokens'] ?? 0;
         $totalTokens = $response['usage']['total_tokens'] ?? 0;
-        
+
         return [
             'content' => $content,
             'usage' => [
@@ -99,19 +99,48 @@ class OpenAIAdapter extends BaseAdapter
             ],
         ];
     }
-    
+
     /**
      * Count the number of tokens in a message.
      *
      * @param string $message
      * @return int
      */
-    protected function countTokens(string $message): int
+    public function countTokens(string $message): int
     {
         // Simple approximation: 1 token ≈ 4 characters
         return (int) ceil(mb_strlen($message) / 4);
     }
-    
+
+    /**
+     * Parse a streaming chunk from the API response.
+     *
+     * @param string $chunk
+     * @return string
+     */
+    protected function parseStreamChunk(string $chunk): string
+    {
+        if (empty($chunk) || $chunk === "data: [DONE]") {
+            return '';
+        }
+
+        // Remove the "data: " prefix
+        $chunk = str_replace('data: ', '', $chunk);
+
+        try {
+            $data = json_decode($chunk, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return '';
+            }
+
+            // Extract content from the delta
+            return $data['choices'][0]['delta']['content'] ?? '';
+        } catch (\Exception $e) {
+            return '';
+        }
+    }
+
     /**
      * Calculate the cost of a request.
      *
@@ -123,23 +152,23 @@ class OpenAIAdapter extends BaseAdapter
     {
         // GPT-3.5 pricing: $0.0015 per 1K input tokens, $0.002 per 1K output tokens
         // GPT-4 pricing: $0.03 per 1K input tokens, $0.06 per 1K output tokens
-        
+
         // Default to GPT-3.5 pricing
         $inputRate = 0.0015;
         $outputRate = 0.002;
-        
+
         // Check if this is a GPT-4 model
         if (stripos($this->model->slug, 'gpt-4') !== false) {
             $inputRate = 0.03;
             $outputRate = 0.06;
         }
-        
+
         $inputCost = ($inputTokens / 1000) * $inputRate;
         $outputCost = ($outputTokens / 1000) * $outputRate;
-        
+
         return $inputCost + $outputCost;
     }
-    
+
     /**
      * Get the capabilities of the AI model.
      *

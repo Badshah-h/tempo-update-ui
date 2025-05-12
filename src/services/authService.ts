@@ -216,4 +216,15 @@ const authService = {
   },
 };
 
+// Helper function to get auth headers for API requests
+export const getAuthHeaders = () => {
+  const token = localStorage.getItem("auth_token");
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  };
+};
+
 export default authService;

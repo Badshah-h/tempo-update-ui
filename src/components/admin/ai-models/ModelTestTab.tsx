@@ -6,10 +6,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Zap, Loader2 } from "lucide-react";
 import { testAiModel } from "@/services/aiModelService";
-import { AiModelConfig } from "@/types/ai";
-
 interface ModelTestTabProps {
-    model: AiModelConfig;
+    model: {
+        id: number;
+        name: string;
+        provider_id: number;
+        type: string;
+        max_tokens: number;
+    };
     toast: any;
 }
 
@@ -123,4 +127,4 @@ const ModelTestTab: React.FC<ModelTestTabProps> = ({ model, toast }) => {
     );
 };
 
-export default ModelTestTab; 
+export default ModelTestTab;

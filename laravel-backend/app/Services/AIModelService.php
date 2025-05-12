@@ -18,14 +18,14 @@ class AIModelService
     public function getAllModels(bool $activeOnly = false): Collection
     {
         $query = AIModel::with('provider');
-        
+
         if ($activeOnly) {
             $query->where('is_active', true);
         }
-        
+
         return $query->orderBy('name')->get();
     }
-    
+
     /**
      * Get models by provider ID.
      *
@@ -36,14 +36,14 @@ class AIModelService
     public function getModelsByProvider(int $providerId, bool $activeOnly = false): Collection
     {
         $query = AIModel::where('provider_id', $providerId);
-        
+
         if ($activeOnly) {
             $query->where('is_active', true);
         }
-        
+
         return $query->orderBy('name')->get();
     }
-    
+
     /**
      * Get a model by ID.
      *
@@ -54,7 +54,7 @@ class AIModelService
     {
         return AIModel::with('provider')->find($id);
     }
-    
+
     /**
      * Get a model by slug.
      *
@@ -65,7 +65,7 @@ class AIModelService
     {
         return AIModel::with('provider')->where('slug', $slug)->first();
     }
-    
+
     /**
      * Get the default AI model.
      *
@@ -77,7 +77,7 @@ class AIModelService
             ->where('is_active', true)
             ->first();
     }
-    
+
     /**
      * Create a new AI model.
      *
@@ -90,15 +90,15 @@ class AIModelService
         if (!isset($data['slug'])) {
             $data['slug'] = Str::slug($data['name']);
         }
-        
+
         // If this is set as default, unset any existing defaults
         if (isset($data['is_default']) && $data['is_default']) {
             $this->clearDefaultModels();
         }
-        
+
         return AIModel::create($data);
     }
-    
+
     /**
      * Update an AI model.
      *
@@ -109,25 +109,25 @@ class AIModelService
     public function updateModel(int $id, array $data): ?AIModel
     {
         $model = $this->getModelById($id);
-        
+
         if (!$model) {
             return null;
         }
-        
+
         // Update slug if name changed and slug not provided
         if (isset($data['name']) && !isset($data['slug']) && $data['name'] !== $model->name) {
             $data['slug'] = Str::slug($data['name']);
         }
-        
+
         // If this is set as default, unset any existing defaults
         if (isset($data['is_default']) && $data['is_default'] && !$model->is_default) {
             $this->clearDefaultModels();
         }
-        
+
         $model->update($data);
         return $model;
     }
-    
+
     /**
      * Delete an AI model.
      *
@@ -137,26 +137,26 @@ class AIModelService
     public function deleteModel(int $id): bool
     {
         $model = $this->getModelById($id);
-        
+
         if (!$model) {
             return false;
         }
-        
+
         // If this was the default model, find another to make default
         if ($model->is_default) {
             $newDefault = AIModel::where('id', '!=', $id)
                 ->where('is_active', true)
                 ->first();
-                
+
             if ($newDefault) {
                 $newDefault->is_default = true;
                 $newDefault->save();
             }
         }
-        
+
         return $model->delete();
     }
-    
+
     /**
      * Toggle the active status of a model.
      *
@@ -166,30 +166,30 @@ class AIModelService
     public function toggleModelStatus(int $id): ?AIModel
     {
         $model = $this->getModelById($id);
-        
+
         if (!$model) {
             return null;
         }
-        
+
         $model->is_active = !$model->is_active;
-        
+
         // If deactivating the default model, find another to make default
         if ($model->is_default && !$model->is_active) {
             $newDefault = AIModel::where('id', '!=', $id)
                 ->where('is_active', true)
                 ->first();
-                
+
             if ($newDefault) {
                 $model->is_default = false;
                 $newDefault->is_default = true;
                 $newDefault->save();
             }
         }
-        
+
         $model->save();
         return $model;
     }
-    
+
     /**
      * Set a model as the default.
      *
@@ -199,19 +199,19 @@ class AIModelService
     public function setAsDefault(int $id): ?AIModel
     {
         $model = $this->getModelById($id);
-        
+
         if (!$model || !$model->is_active) {
             return null;
         }
-        
+
         $this->clearDefaultModels();
-        
+
         $model->is_default = true;
         $model->save();
-        
+
         return $model;
     }
-    
+
     /**
      * Clear all default models.
      *
@@ -221,7 +221,7 @@ class AIModelService
     {
         AIModel::where('is_default', true)->update(['is_default' => false]);
     }
-    
+
     /**
      * Test a model with a sample query.
      *
@@ -233,31 +233,31 @@ class AIModelService
     public function testModel(int $id, string $query, array $options = []): array
     {
         $model = $this->getModelById($id);
-        
+
         if (!$model) {
             return [
                 'success' => false,
                 'message' => 'Model not found',
             ];
         }
-        
+
         // Get the appropriate AI adapter for this model
         $adapter = $this->getAdapterForModel($model);
-        
+
         if (!$adapter) {
             return [
                 'success' => false,
                 'message' => 'No adapter available for this model',
             ];
         }
-        
+
         try {
             $startTime = microtime(true);
             $response = $adapter->generateResponse($query, $options);
             $endTime = microtime(true);
-            
+
             $responseTime = round($endTime - $startTime, 2);
-            
+
             return [
                 'success' => true,
                 'response' => $response['content'],
@@ -274,7 +274,7 @@ class AIModelService
             ];
         }
     }
-    
+
     /**
      * Get the appropriate AI adapter for a model.
      *
@@ -284,29 +284,18 @@ class AIModelService
     private function getAdapterForModel(AIModel $model)
     {
         $provider = $model->provider;
-        
+
         if (!$provider || !$provider->is_active) {
             return null;
         }
-        
+
         $apiKey = $provider->activeApiKey;
-        
+
         if (!$apiKey) {
             return null;
         }
-        
-        // Factory pattern to get the right adapter
-        $adapterClass = '\App\Services\AIAdapters\' . Str::studly($provider->slug) . 'Adapter';
-        
-        if (!class_exists($adapterClass)) {
-            // Fall back to generic adapter
-            $adapterClass = '\App\Services\AIAdapters\GenericAdapter';
-            
-            if (!class_exists($adapterClass)) {
-                return null;
-            }
-        }
-        
-        return new $adapterClass($model, $apiKey->key_value);
+
+        // Use the adapter factory to get the right adapter
+        return \App\Services\AIAdapters\AIAdapterFactory::createAdapter($model, $apiKey->key_value);
     }
 }

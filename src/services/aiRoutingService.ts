@@ -1,4 +1,46 @@
-import { routeMessage, testRoutingRule } from "./aiModelService";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+
+// Helper function to get auth headers
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("auth_token");
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  };
+};
+
+// API functions for routing
+const routeMessage = async (message: string, context: any) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/ai-routing/route`,
+      { message, context },
+      getAuthHeaders()
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error("Error in routeMessage API call:", error);
+    throw error;
+  }
+};
+
+const testRoutingRule = async (ruleId: number, message: string, context: any) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/ai-routing/test-rule/${ruleId}`,
+      { message, context },
+      getAuthHeaders()
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error("Error in testRoutingRule API call:", error);
+    throw error;
+  }
+};
 
 /**
  * AI Routing Service

@@ -11,6 +11,10 @@ import Settings from "./components/admin/Settings";
 import UserManagement from "./components/admin/UserManagement";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import AIModelsPage from "./pages/admin/AIModelsPage";
+import AIModelTestPage from "./pages/admin/AIModelTestPage";
+import AiProviderConfigPage from "./pages/admin/AiProviderConfigPage";
+import ApiTesterPage from "./pages/ApiTesterPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { AuthProvider } from "./contexts/AuthContext";
 import { Toaster } from "./components/ui/toaster";
@@ -37,7 +41,13 @@ function App() {
             >
               <Route index element={<Dashboard />} />
               <Route path="widget" element={<WidgetConfig />} />
-              <Route path="models" element={<AIModels />} />
+              {/* Legacy AI Models implementation - commented out as requested */}
+              {/* <Route path="models" element={<AIModels />} /> */}
+              {/* New AI Models implementation */}
+              <Route path="ai-models/*" element={<AIModelsPage />} />
+              <Route path="ai-models/test/:id" element={<AIModelTestPage />} />
+              {/* AI Provider Configuration */}
+              <Route path="ai-provider-config/*" element={<AiProviderConfigPage />} />
               <Route path="prompts" element={<PromptTemplates />} />
               <Route path="settings" element={<Settings />} />
               <Route path="analytics" element={<Analytics />} />
@@ -46,6 +56,9 @@ function App() {
 
             {/* Public Home Route */}
             <Route path="/" element={<Home />} />
+
+            {/* API Tester Route */}
+            <Route path="/api-tester" element={<ApiTesterPage />} />
 
             {/* Catch-all route */}
             <Route path="*" element={<Navigate to="/" replace />} />
